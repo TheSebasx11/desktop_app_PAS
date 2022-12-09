@@ -115,16 +115,25 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="Verify"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="verifyBActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="saveB">
       <Properties>
         <Property name="text" type="java.lang.String" value="Save"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="saveBActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="IdenB">
       <Properties>
         <Property name="text" type="java.lang.String" value="Identificar"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="IdenBActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="exitB">
       <Properties>

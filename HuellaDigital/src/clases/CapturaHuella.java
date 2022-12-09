@@ -1,3 +1,4 @@
+package clases;
 
 import com.digitalpersona.onetouch.DPFPDataPurpose;
 import com.digitalpersona.onetouch.DPFPFeatureSet;
@@ -17,8 +18,12 @@ import com.digitalpersona.onetouch.processing.DPFPEnrollment;
 import com.digitalpersona.onetouch.processing.DPFPFeatureExtraction;
 import com.digitalpersona.onetouch.processing.DPFPImageQualityException;
 import com.digitalpersona.onetouch.verification.DPFPVerification;
+import clases.conexion;
+import com.digitalpersona.onetouch.verification.DPFPVerificationResult;
+import com.mysql.jdbc.*;
 
 import java.awt.Image;
+import java.io.ByteArrayInputStream;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
@@ -43,25 +48,117 @@ public class CapturaHuella extends javax.swing.JFrame {
     public static String TEMPLATE_PROPERTY = "template";
     public DPFPFeatureSet featuresInscripcion;
     public DPFPFeatureSet featuresVerificacion;
+    public conexion conect;
 
     public CapturaHuella() {
         initComponents();
+        conect = new conexion();
         Iniciar();
         start();
         EstadoHuellas();
         saveB.setEnabled(false);
         IdenB.setEnabled(false);
         verifyB.setEnabled(false);
-        
-        
-        
+        exitB.grabFocus();
+
     }
 
     public void EnviarTexto(String msg) {
         jTextArea1.append(msg + "\n");
     }
 
-    public void ProcesarCaptura() {
+    public void guardarHuella() throws Exception {
+        ByteArrayInputStream datosHuella = new ByteArrayInputStream(template.serialize());
+        Integer tamHuella = template.serialize().length;
+
+        String nombre = JOptionPane.showInputDialog("Nombre: ");
+
+        try {
+            conect.Conectar();
+            var guardarStmt = (PreparedStatement) conect.getConexion().
+                    prepareStatement("INSERT INTO huellas(usuarios_idusuarios, huehuella, lugar_huella) VALUES(?,?,?) ");
+
+            guardarStmt.setInt(1, 1);
+            guardarStmt.setBinaryStream(2, datosHuella, tamHuella);
+            guardarStmt.setString(3, "Indice derecho");
+
+            guardarStmt.execute();
+            guardarStmt.close();
+            JOptionPane.showMessageDialog(null, "Huella Guardada Correctamente");
+
+            saveB.setEnabled(false);
+            verifyB.grabFocus();
+
+        } catch (Exception e) {
+            System.err.println(e);
+        } finally {
+            conect.Desconectar();
+        }
+    }
+
+    public void verificarHuella(String nom) {
+        try {
+            conect.Conectar();
+
+            java.sql.PreparedStatement verificarStmt
+                    = conect.getConexion().prepareStatement("SELECT huehuella FROM huellas WHERE huenombre=?");
+            verificarStmt.setString(1, nom);
+            java.sql.ResultSet rs = verificarStmt.executeQuery();
+            if (rs.next()) {
+                byte templateBuffer[] = rs.getBytes("huehuella");
+
+                DPFPTemplate referenceTemplate = DPFPGlobal.getTemplateFactory().createTemplate(templateBuffer);
+                setTemplate(referenceTemplate);
+
+                DPFPVerificationResult result = Verificador.verify(featuresInscripcion, getTemplate());
+
+                if (result.isVerified()) {
+                    JOptionPane.showMessageDialog(null, "La huella coincide con la de " + nom, " Verificacion de Huella", JOptionPane.OK_OPTION);
+                } else {
+                    JOptionPane.showMessageDialog(null, "No corresponde la hulla con " + nom, "Verificacion de huella", JOptionPane.ERROR_MESSAGE);
+                }
+            } else {
+                JOptionPane.showMessageDialog(null, "No existe un registro de huella para " + nom, "Verificación de huella", JOptionPane.NO_OPTION);
+            }
+        } catch (Exception e) {
+            System.err.println(e);
+        } finally {
+            conect.Desconectar();
+        }
+    }
+
+    public void identificarHuella() throws Exception {
+        try {
+            conect.Conectar();
+            java.sql.PreparedStatement identificarStmt = conect.getConexion().prepareStatement("SELECT huenombre, huehuella FROM huellas");
+
+            java.sql.ResultSet rs = identificarStmt.executeQuery();
+
+            while (rs.next()) {
+                byte templateBuffer[] = rs.getBytes("huehuella");
+                String nombre = rs.getString("huenombre");
+
+                DPFPTemplate referenceTemplate = DPFPGlobal.getTemplateFactory().createTemplate(templateBuffer);
+
+                setTemplate(referenceTemplate);
+
+                DPFPVerificationResult result = Verificador.verify(featuresInscripcion, getTemplate());
+
+                if (result.isVerified()) {
+                    JOptionPane.showMessageDialog(null, "Las huellas capturada es de " + nombre, "Verificación de huella", JOptionPane.INFORMATION_MESSAGE);
+
+                    return;
+                }
+            }
+            JOptionPane.showMessageDialog(null, "No existe ningún registro que coincide con la huella", "Verificación de huella", JOptionPane.ERROR_MESSAGE);
+
+            setTemplate(null);
+
+        } catch (Exception e) {
+            System.err.println("Error al identificar huella dactilar." + e.getMessage());
+        } finally {
+            conect.Desconectar();
+        }
     }
 
     public DPFPFeatureSet extraerCaracteristicas(DPFPSample sample, DPFPDataPurpose purpose) {
@@ -106,7 +203,7 @@ public class CapturaHuella extends javax.swing.JFrame {
         DPFPTemplate old = this.template;
         this.template = template;
         firePropertyChange(TEMPLATE_PROPERTY, old, temp);
-    } 
+    }
 
     public void ProcesarCaptura(DPFPSample sample) {
         featuresInscripcion = extraerCaracteristicas(sample, DPFPDataPurpose.DATA_PURPOSE_ENROLLMENT);
@@ -137,7 +234,7 @@ public class CapturaHuella extends javax.swing.JFrame {
                         setTemplate(null);
                         JOptionPane.showMessageDialog(CapturaHuella.this, "Algo salió mal");
                     default:
-                        
+
                 }
             }
         }
@@ -259,10 +356,25 @@ public class CapturaHuella extends javax.swing.JFrame {
         );
 
         verifyB.setText("Verify");
+        verifyB.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                verifyBActionPerformed(evt);
+            }
+        });
 
         saveB.setText("Save");
+        saveB.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                saveBActionPerformed(evt);
+            }
+        });
 
         IdenB.setText("Identificar");
+        IdenB.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                IdenBActionPerformed(evt);
+            }
+        });
 
         exitB.setText("Salir");
         exitB.addActionListener(new java.awt.event.ActionListener() {
@@ -326,8 +438,35 @@ public class CapturaHuella extends javax.swing.JFrame {
         System.exit(0);
     }//GEN-LAST:event_exitBActionPerformed
 
-    
-    
+    private void verifyBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_verifyBActionPerformed
+        // TODO add your handling code here:
+        String nombre = JOptionPane.showInputDialog("Nombre a verificar: ");
+        verificarHuella(nombre);
+        Reclutador.clear();
+    }//GEN-LAST:event_verifyBActionPerformed
+
+    private void saveBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveBActionPerformed
+        // TODO add your handling code here:
+        try {
+            guardarHuella();
+            Reclutador.clear();
+            lbImage.setIcon(null);
+            start();
+        } catch (Exception e) {
+            System.err.println(e);
+        }
+    }//GEN-LAST:event_saveBActionPerformed
+
+    private void IdenBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_IdenBActionPerformed
+        // TODO add your handling code here:
+        try {
+            identificarHuella();
+            Reclutador.clear();
+        } catch (Exception e) {
+            System.err.println(e);
+        }
+    }//GEN-LAST:event_IdenBActionPerformed
+
     /**
      * @param args the command line arguments
      */
