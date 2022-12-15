@@ -18,7 +18,7 @@ import com.digitalpersona.onetouch.processing.DPFPEnrollment;
 import com.digitalpersona.onetouch.processing.DPFPFeatureExtraction;
 import com.digitalpersona.onetouch.processing.DPFPImageQualityException;
 import com.digitalpersona.onetouch.verification.DPFPVerification;
-import clases.conexion;
+import conector.conexion;
 import com.digitalpersona.onetouch.verification.DPFPVerificationResult;
 import com.mysql.jdbc.*;
 

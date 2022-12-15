@@ -1,19 +1,73 @@
+
+import java.util.ArrayList;
+import javax.swing.table.DefaultTableModel;
+
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-
 /**
  *
  * @author Rusbel
  */
+import conector.*;
+import modelos.EmpleadoModel;
+
 public class empleados extends javax.swing.JFrame {
 
-    /**
-     * Creates new form empleados
-     */
+    private DefaultTableModel DTM;
+    public conexion con;
+    public Operaciones quer;
+
     public empleados() {
         initComponents();
+        con = new conexion();
+        quer = new Operaciones();
+        DTM = (DefaultTableModel) jTable1.getModel();
+    }
+
+    public ArrayList<EmpleadoModel> llenarEmpleados() {
+        ArrayList<EmpleadoModel> ListaEmpleados = new ArrayList<>();
+        try {
+            quer.setSt(con.getConexion().prepareStatement(quer.getSelectUserCargo()));
+            quer.setRs(quer.getSt().executeQuery());
+            while (quer.getRs().next()) {
+
+                EmpleadoModel emp = new EmpleadoModel(quer.getRs().getInt("idusuarios"),
+                        quer.getRs().getString("Nombre_Cargo"), quer.getRs().getInt("cargo"),
+                        quer.getRs().getString("name_01"), quer.getRs().getString("name_02"),
+                        quer.getRs().getString("lastname01"), quer.getRs().getString("lastname02"),
+                        quer.getRs().getString("fecha_nac"),
+                         quer.getRs().getString("identificacion"),
+                         quer.getRs().getString("sexo"),
+                         quer.getRs().getString("email"),
+                         quer.getRs().getInt("telefono")
+                );
+
+                ListaEmpleados.add(emp);
+            }
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        return ListaEmpleados;
+    }
+
+    private void MostrarEmpleados(ArrayList<EmpleadoModel> Lista) {
+
+        DTM.setRowCount(0);
+        for (EmpleadoModel emp : Lista) {
+            int fila = DTM.getRowCount();
+            DTM.setRowCount(fila + 1);
+            DTM.setValueAt(emp.getName01() + " " + emp.getName02(), fila, 0);
+            DTM.setValueAt(emp.getLastname01() + " " + emp.getLastname02(), fila, 1);
+            DTM.setValueAt(emp.getIdentificacion(), fila, 2);
+            DTM.setValueAt(emp.getSexo(), fila, 3);
+            DTM.setValueAt(emp.getCargo(), fila, 4);
+            DTM.setValueAt(emp.getFechaNac(), fila, 5);
+            DTM.setValueAt(emp.getEmail(), fila, 6);
+            DTM.setValueAt(emp.getTelefono(), fila, 7);
+        }
+        //System.out.println(jTable1.getColumnCount());
     }
 
     /**
@@ -175,25 +229,27 @@ public class empleados extends javax.swing.JFrame {
                 .addContainerGap(26, Short.MAX_VALUE))
         );
 
-        jTable1.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null}
+
             },
             new String [] {
-                "Nombres", "Apellidos", "Identificacion", "Sexo", "Cargo", "Fecha_nacimiento", "E-mail"
+                "Nombres", "Apellidos", "Identificacion", "Sexo", "Cargo", "Nacimiento", "E-mail", "Telefono"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class
+                java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
                 return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
             }
         });
         jScrollPane2.setViewportView(jTable1);
@@ -221,6 +277,11 @@ public class empleados extends javax.swing.JFrame {
 
         jButton6.setFont(new java.awt.Font("Comic Sans MS", 0, 24)); // NOI18N
         jButton6.setText("Generar listado");
+        jButton6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton6ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel18Layout = new javax.swing.GroupLayout(jPanel18);
         jPanel18.setLayout(jPanel18Layout);
@@ -316,6 +377,12 @@ public class empleados extends javax.swing.JFrame {
         window.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+        // TODO add your handling code here:
+
+        MostrarEmpleados(llenarEmpleados());
+    }//GEN-LAST:event_jButton6ActionPerformed
 
     /**
      * @param args the command line arguments
