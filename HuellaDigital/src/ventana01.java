@@ -7,13 +7,47 @@
  *
  * @author Jose Perez
  */
+import conector.*;
+
 public class ventana01 extends javax.swing.JFrame {
 
     /**
      * Creates new form ventana01
      */
+    private conexion con;
+    private Operaciones ope;
+    String cantUser_query = "SELECT COUNT(*) AS Cantidad_Usuarios FROM usuarios INNER JOIN usuarios_has_horarios as UH ON UH.usuarios_idusuarios = usuarios.idusuarios;";
+    String cantAsist_query = "SELECT COUNT(turnos.llegada) as Asistencia FROM turnos, usuarios INNER JOIN usuarios_has_horarios AS U ON U.usuarios_idusuarios = usuarios.idusuarios WHERE turnos.usuarios_idusuarios = usuarios.idusuarios";
+
+    int cantidadUsuarios = 0;
+    int cantAsistencia = 0;
+
     public ventana01() {
         initComponents();
+        con = new conexion();
+        ope = new Operaciones();
+        MostrarCantidad();
+    }
+
+    public void MostrarCantidad() {
+        try {
+
+            ope.setSt(con.getConexion().prepareStatement(cantUser_query));
+            ope.setRs(ope.getSt().executeQuery(cantUser_query));
+            while (ope.getRs().next()) {
+                cantidadUsuarios = ope.getRs().getInt("Cantidad_Usuarios");
+            }
+            ope = new Operaciones();
+            ope.setSt(con.getConexion().prepareStatement(cantAsist_query));
+            ope.setRs(ope.getSt().executeQuery(cantAsist_query));
+            while (ope.getRs().next()) {
+                cantAsistencia = ope.getRs().getInt("Asistencia");
+            }
+            asist_label.setText("Asistencia Empleados " + cantAsistencia);
+            total_emp.setText("Total de empleados: " + cantidadUsuarios);
+        } catch (Exception e) {
+            System.out.println(e);
+        }
     }
 
     /**
@@ -39,11 +73,11 @@ public class ventana01 extends javax.swing.JFrame {
         jTextField1 = new javax.swing.JTextField();
         jPanel4 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
+        total_emp = new javax.swing.JLabel();
         jButton5 = new javax.swing.JButton();
         jLabel6 = new javax.swing.JLabel();
         jPanel5 = new javax.swing.JPanel();
-        jLabel5 = new javax.swing.JLabel();
+        asist_label = new javax.swing.JLabel();
         jPanel6 = new javax.swing.JPanel();
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
@@ -206,13 +240,13 @@ public class ventana01 extends javax.swing.JFrame {
 
         jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/employees.png"))); // NOI18N
 
-        jLabel4.setFont(new java.awt.Font("Comic Sans MS", 0, 16)); // NOI18N
-        jLabel4.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel4.setText(" Total de empleados");
+        total_emp.setFont(new java.awt.Font("Comic Sans MS", 0, 16)); // NOI18N
+        total_emp.setForeground(new java.awt.Color(255, 255, 255));
+        total_emp.setText(" Total de empleados");
 
         jButton5.setBackground(new java.awt.Color(0, 0, 0));
         jButton5.setFont(new java.awt.Font("Comic Sans MS", 0, 16)); // NOI18N
-        jButton5.setForeground(new java.awt.Color(255, 255, 255));
+        jButton5.setForeground(new java.awt.Color(0, 0, 0));
         jButton5.setText("Mas información");
 
         jLabel6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/flechita.png"))); // NOI18N
@@ -224,12 +258,11 @@ public class ventana01 extends javax.swing.JFrame {
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButton5, javax.swing.GroupLayout.DEFAULT_SIZE, 206, Short.MAX_VALUE)
                     .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addComponent(jLabel4)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLabel3)
-                        .addGap(0, 20, Short.MAX_VALUE)))
+                        .addComponent(total_emp)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabel3)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel6)
                 .addContainerGap())
@@ -240,7 +273,7 @@ public class ventana01 extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabel3)
-                    .addComponent(jLabel4))
+                    .addComponent(total_emp))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel6)
@@ -250,26 +283,26 @@ public class ventana01 extends javax.swing.JFrame {
 
         jPanel5.setBackground(new java.awt.Color(204, 0, 0));
 
-        jLabel5.setBackground(new java.awt.Color(255, 255, 255));
-        jLabel5.setFont(new java.awt.Font("Comic Sans MS", 0, 16)); // NOI18N
-        jLabel5.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel5.setText("Asistencia empleados");
+        asist_label.setBackground(new java.awt.Color(255, 255, 255));
+        asist_label.setFont(new java.awt.Font("Comic Sans MS", 0, 16)); // NOI18N
+        asist_label.setForeground(new java.awt.Color(255, 255, 255));
+        asist_label.setText("Asistencia empleados");
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
         jPanel5Layout.setHorizontalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel5Layout.createSequentialGroup()
-                .addGap(72, 72, 72)
-                .addComponent(jLabel5)
-                .addContainerGap(35, Short.MAX_VALUE))
+                .addGap(54, 54, 54)
+                .addComponent(asist_label)
+                .addContainerGap(53, Short.MAX_VALUE))
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel5Layout.createSequentialGroup()
-                .addGap(29, 29, 29)
-                .addComponent(jLabel5)
-                .addContainerGap(58, Short.MAX_VALUE))
+                .addGap(32, 32, 32)
+                .addComponent(asist_label)
+                .addContainerGap(55, Short.MAX_VALUE))
         );
 
         jPanel6.setBackground(new java.awt.Color(204, 0, 0));
@@ -456,6 +489,7 @@ public class ventana01 extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel asist_label;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
@@ -464,8 +498,6 @@ public class ventana01 extends javax.swing.JFrame {
     private javax.swing.JButton jButton6;
     private javax.swing.JButton jButton7;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
@@ -480,5 +512,6 @@ public class ventana01 extends javax.swing.JFrame {
     private javax.swing.JTable jTable1;
     private javax.swing.JTable jTable2;
     private javax.swing.JTextField jTextField1;
+    private javax.swing.JLabel total_emp;
     // End of variables declaration//GEN-END:variables
 }
