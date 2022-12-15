@@ -1,20 +1,48 @@
+
+import com.raven.datechooser.SelectedDate;
+
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-
 /**
  *
  * @author Jose Perez
  */
+import modelos.*;
+import conector.*;
+import java.util.ArrayList;
+
 public class registroempleado extends javax.swing.JFrame {
 
-    /**
-     * Creates new form registroempleado
-     */
+    ArrayList<CargoModelo> cargos = new ArrayList<CargoModelo>();
+    private Operaciones ope;
+    private conexion con;
+
     public registroempleado() {
         initComponents();
+        ope = new Operaciones();
+        con = new conexion();
+        obtenerData();
     }
+    
+    
+    public void obtenerData(){
+        try {
+              ope.setSt(con.getConexion().prepareStatement(ope.getSelectCargos()));
+            ope.setRs(ope.getSt().executeQuery(ope.getSelectCargos()));
+            while (ope.getRs().next()) {
+                CargoModelo cargo = new CargoModelo(ope.getRs().getInt("id_cargo"), ope.getRs().getString("nombre"));
+                cargos.add(cargo);
+            }
+            cargos.forEach((E) -> {
+                cargo_menu.addItem(E.getNombre());
+            });
+            ope = new Operaciones();
+        } catch (Exception e) {
+        }
+    }
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -25,6 +53,7 @@ public class registroempleado extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        date = new com.raven.datechooser.DateChooser();
         jPanel3 = new javax.swing.JPanel();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
@@ -32,7 +61,7 @@ public class registroempleado extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        cargo_menu = new javax.swing.JComboBox<>();
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
@@ -40,12 +69,14 @@ public class registroempleado extends javax.swing.JFrame {
         jTextField1 = new javax.swing.JTextField();
         jTextField2 = new javax.swing.JTextField();
         jTextField3 = new javax.swing.JTextField();
-        jTextField4 = new javax.swing.JTextField();
-        jTextField5 = new javax.swing.JTextField();
+        id_doc = new javax.swing.JTextField();
+        txtDate = new javax.swing.JTextField();
         jTextField6 = new javax.swing.JTextField();
-        jComboBox2 = new javax.swing.JComboBox<>();
+        sex_menu = new javax.swing.JComboBox<>();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
+
+        date.setTextRefernce(txtDate);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -66,8 +97,6 @@ public class registroempleado extends javax.swing.JFrame {
         jLabel5.setFont(new java.awt.Font("Comic Sans MS", 0, 14)); // NOI18N
         jLabel5.setText("Cargo");
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
         jLabel6.setFont(new java.awt.Font("Comic Sans MS", 0, 14)); // NOI18N
         jLabel6.setText("Documento de identidad");
 
@@ -86,7 +115,7 @@ public class registroempleado extends javax.swing.JFrame {
             }
         });
 
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        sex_menu.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Femenino", "Hombre" }));
 
         jButton1.setFont(new java.awt.Font("Comic Sans MS", 0, 14)); // NOI18N
         jButton1.setText("Registrar");
@@ -138,13 +167,13 @@ public class registroempleado extends javax.swing.JFrame {
                                     .addComponent(jTextField3, javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addComponent(jTextField1, javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addComponent(jTextField2, javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(jTextField4, javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(jTextField5, javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(id_doc, javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(txtDate, javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addComponent(jTextField6)
                                     .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                            .addComponent(cargo_menu, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                            .addComponent(sex_menu, 0, 106, Short.MAX_VALUE))
                                         .addGap(0, 0, Short.MAX_VALUE)))))
                         .addGap(41, 41, 41))))
         );
@@ -169,30 +198,27 @@ public class registroempleado extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
                     .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLabel8))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(21, 21, 21)
-                        .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel8)
+                    .addComponent(txtDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(21, 21, 21)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
-                    .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(id_doc, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel9)
                     .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel5)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(30, 30, 30)
+                    .addComponent(cargo_menu, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel5))
+                .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel7)
-                    .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 42, Short.MAX_VALUE)
+                    .addComponent(sex_menu, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -203,17 +229,11 @@ public class registroempleado extends javax.swing.JFrame {
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGap(26, 26, 26)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(20, Short.MAX_VALUE))
+            .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -222,11 +242,13 @@ public class registroempleado extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addGap(0, 46, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 32, Short.MAX_VALUE))
         );
 
         pack();
@@ -243,9 +265,14 @@ public class registroempleado extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        adminprincpial01 ap = new adminprincpial01();
+        
+        SelectedDate day = date.getSelectedDate();
+        System.out.println(day.getDay() + "/" + day.getMonth() + "/" + day.getYear());
+        System.out.println(cargos.get(cargo_menu.getSelectedIndex()).getNombre());
+        System.out.println(sex_menu.getSelectedItem());
+        /*        adminprincpial01 ap = new adminprincpial01();
         ap.setVisible(true);
-        this.dispose();
+        this.dispose();*/
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
@@ -284,10 +311,11 @@ public class registroempleado extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JComboBox<String> cargo_menu;
+    private com.raven.datechooser.DateChooser date;
+    private javax.swing.JTextField id_doc;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
-    private javax.swing.JComboBox<String> jComboBox1;
-    private javax.swing.JComboBox<String> jComboBox2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -302,8 +330,8 @@ public class registroempleado extends javax.swing.JFrame {
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
     private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
-    private javax.swing.JTextField jTextField5;
     private javax.swing.JTextField jTextField6;
+    private javax.swing.JComboBox<String> sex_menu;
+    private javax.swing.JTextField txtDate;
     // End of variables declaration//GEN-END:variables
 }

@@ -16,13 +16,24 @@ public class Operaciones {
     private PreparedStatement st;
     private ResultSet rs;
     private String SelectUserCargo;
-
+    private String SelectCargos;
+    
     public Operaciones() {
         st = null;
         rs = null;
         SelectUserCargo = "SELECT usuarios.*, cargos.nombre as Nombre_Cargo FROM `usuarios`, cargos WHERE usuarios.cargo = cargos.id_cargo";
+        SelectCargos = "SELECT * FROM cargos;";
     }
 
+    public String getSelectCargos() {
+        return SelectCargos;
+    }
+
+    public void setSelectCargos(String SelectCargos) {
+        this.SelectCargos = SelectCargos;
+    }
+
+    
     public PreparedStatement getSt() {
         return st;
     }
