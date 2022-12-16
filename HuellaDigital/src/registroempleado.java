@@ -29,6 +29,8 @@ public class registroempleado extends javax.swing.JFrame {
         obtenerData();
     }
 
+    
+    
     public void crearUsuario(int id_cargo, String name01, String name02, String lastname01, String lastname02, String fechaNac, String identificacion, String sexo, String email, int telefono) {
         try {
             ope.setSt(con.getConexion().prepareStatement(ope.getInsertUsuario()));
