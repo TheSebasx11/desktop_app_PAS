@@ -7,6 +7,18 @@
  *
  * @author Jose Perez
  */
+import javax.swing.*;
+import java.io.*;
+import javax.media.*;
+import javax.media.format.*;
+import javax.media.util.*;
+import javax.media.control.*;
+import java.awt.*;
+import java.awt.image.*;
+import java.awt.event.*;
+import com.sun.image.codec.jpeg.*;
+import java.util.Vector;
+
 public class asistenciahuella extends javax.swing.JFrame {
 
     /**
@@ -14,6 +26,38 @@ public class asistenciahuella extends javax.swing.JFrame {
      */
     public asistenciahuella() {
         initComponents();
+    }
+
+    public void devices() {
+        Vector devices = new Vector(CaptureDeviceManager.getDeviceList(null));
+        for (int i = 0; i < devices.size(); i++) {
+            System.out.println(devices.elementAt(i));
+        }
+    }
+
+    public static void saveJPG(Image img, String s) {
+        BufferedImage bi = new BufferedImage(img.getWidth(null), img.getHeight(null), BufferedImage.TYPE_INT_RGB);
+        Graphics2D g2 = bi.createGraphics();
+        g2.drawImage(img, null, null);
+
+        FileOutputStream out = null;
+        try {
+            out = new FileOutputStream(s);
+        } catch (java.io.FileNotFoundException io) {
+            System.out.println("File Not Found");
+        }
+
+        JPEGImageEncoder encoder = JPEGCodec.createJPEGEncoder(out);
+        JPEGEncodeParam param = encoder.getDefaultJPEGEncodeParam(bi);
+        param.setQuality(0.5f, false);
+        encoder.setJPEGEncodeParam(param);
+
+        try {
+            encoder.encode(bi);
+            out.close();
+        } catch (java.io.IOException io) {
+            System.out.println("IOException");
+        }
     }
 
     /**
@@ -189,7 +233,7 @@ public class asistenciahuella extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-       ventana01 principal = new ventana01();
+        ventana01 principal = new ventana01();
         principal.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_jButton3ActionPerformed
