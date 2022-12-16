@@ -1,19 +1,63 @@
+
+import conector.Operaciones;
+import conector.conexion;
+import java.util.ArrayList;
+import javax.swing.table.DefaultTableModel;
+import modelos.EmpleadoModel;
+
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-
 /**
  *
  * @author Jose Perez
  */
 public class consul_horario extends javax.swing.JFrame {
 
-    /**
-     * Creates new form consul_horario
-     */
+    private DefaultTableModel DTM;
+    public conexion con;
+    public Operaciones quer;
+
     public consul_horario() {
         initComponents();
+        con = new conexion();
+        quer = new Operaciones();
+
+    }
+
+    public String getHorarioBuscarEmpleado(String pattern) {
+        return "SELECT CONCAT(name_01, \" \", name_02) as Nombres,CONCAT(lastname01, \" \", lastname02) as Apellidos, \n"
+                + "identificacion as Identificacion, fecha_nac as Fecha, hora_inicio as Llegada, hora_fin as Salida\n"
+                + "FROM (SELECT * \n"
+                + "FROM usuarios as U, usuarios_has_horarios as UH, horarios as H \n"
+                + "WHERE U.idusuarios = UH.usuarios_idusuarios AND  UH.horarios_idhorarios = H.idhorarios)a "
+                + "WHERE name_01 LIKE '%" + pattern + "%' or name_02 LIKE '%" + pattern + "%' or lastname01 "
+                + "LIKE '%" + pattern + "%' or lastname02 LIKE '%" + pattern + "%';";
+    }
+
+    public void buscarEmpleados(String pattern) {
+        DTM = (DefaultTableModel) jTable1.getModel();
+         DTM.setRowCount(0);
+        try {
+            quer.setSt(con.getConexion().prepareStatement(getHorarioBuscarEmpleado(pattern)));
+            quer.setRs(quer.getSt().executeQuery());
+            while (quer.getRs().next()) {
+
+                int fila = DTM.getRowCount();
+                DTM.setRowCount(fila + 1);
+                DTM.setValueAt(quer.getRs().getString("Nombres"), fila, 0);
+                DTM.setValueAt(quer.getRs().getString("Apellidos"), fila, 1);
+                DTM.setValueAt(quer.getRs().getString("Identificacion"), fila, 2);
+                DTM.setValueAt(quer.getRs().getString("Fecha"), fila, 3);
+                DTM.setValueAt(quer.getRs().getString("Llegada"), fila, 4);
+                DTM.setValueAt(quer.getRs().getString("Salida"), fila, 5);
+            }
+
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+
     }
 
     /**
@@ -30,7 +74,7 @@ public class consul_horario extends javax.swing.JFrame {
         jButton1 = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
-        jTextField1 = new javax.swing.JTextField();
+        search_input = new javax.swing.JTextField();
         jButton2 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -44,41 +88,27 @@ public class consul_horario extends javax.swing.JFrame {
 
         jButton1.setFont(new java.awt.Font("Comic Sans MS", 0, 14)); // NOI18N
         jButton1.setText("Buscar");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null}
+
             },
             new String [] {
-                "Nombre", "Apellidos", "Identificación", "Fecha_nacimiento", "Hora_llegada", "Hora_salida"
+                "Nombre", "Apellidos", "Identificación", "Fecha Nacimiento", "Hora Llegada", "Hora Salida"
             }
         ));
         jScrollPane1.setViewportView(jTable1);
+
+        search_input.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                search_inputActionPerformed(evt);
+            }
+        });
 
         jButton2.setFont(new java.awt.Font("Comic Sans MS", 0, 14)); // NOI18N
         jButton2.setText("Volver");
@@ -99,7 +129,7 @@ public class consul_horario extends javax.swing.JFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 298, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(search_input, javax.swing.GroupLayout.PREFERRED_SIZE, 298, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -113,7 +143,7 @@ public class consul_horario extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
                     .addComponent(jButton1)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(search_input, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton2))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -144,6 +174,14 @@ public class consul_horario extends javax.swing.JFrame {
         ap.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        buscarEmpleados(search_input.getText());
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void search_inputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_search_inputActionPerformed
+        buscarEmpleados(search_input.getText());        // TODO add your handling code here:
+    }//GEN-LAST:event_search_inputActionPerformed
 
     /**
      * @param args the command line arguments
@@ -187,6 +225,6 @@ public class consul_horario extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
-    private javax.swing.JTextField jTextField1;
+    private javax.swing.JTextField search_input;
     // End of variables declaration//GEN-END:variables
 }

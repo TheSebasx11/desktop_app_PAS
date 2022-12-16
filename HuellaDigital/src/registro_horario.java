@@ -1,8 +1,13 @@
+
+import conector.Operaciones;
+import conector.conexion;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-
 /**
  *
  * @author Jose Perez
@@ -12,8 +17,46 @@ public class registro_horario extends javax.swing.JFrame {
     /**
      * Creates new form registro_horario
      */
+    public conexion con;
+    public Operaciones ope;
+
     public registro_horario() {
         initComponents();
+        con = new conexion();
+        ope = new Operaciones();
+    }
+
+    private void sendData(String hour1, String hour2) {
+
+        String query = "INSERT into horarios(  hora_inicio, hora_fin) VALUES(?, ?);";
+        try {
+            ope.setSt(con.getConexion().prepareStatement(query));
+            ope.getSt().setString(1, hour1);
+            ope.getSt().setString(2, hour2);
+            int update = ope.getSt().executeUpdate();
+            JOptionPane.showMessageDialog(null, "Agregado con exito");
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+    }
+
+    private String formatHour(int hour, int min) {
+        String newH = "";
+        String newM = "";
+
+        if (hour > 9) {
+            newH = "" + hour;
+        } else {
+            newH = "0" + hour;
+        }
+
+        if (min > 9) {
+            newM = "" + min;
+        } else {
+            newM = "0" + min;
+        }
+
+        return newH + ":" + newM;
     }
 
     /**
@@ -35,11 +78,11 @@ public class registro_horario extends javax.swing.JFrame {
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
-        jSpinner1 = new javax.swing.JSpinner();
-        jSpinner2 = new javax.swing.JSpinner();
-        jSpinner3 = new javax.swing.JSpinner();
+        hour1_txt = new javax.swing.JSpinner();
+        min1_txt = new javax.swing.JSpinner();
+        min2S_txt = new javax.swing.JSpinner();
         jLabel4 = new javax.swing.JLabel();
-        jSpinner4 = new javax.swing.JSpinner();
+        hourS_txt = new javax.swing.JSpinner();
 
         jTextArea1.setColumns(20);
         jTextArea1.setRows(5);
@@ -78,15 +121,15 @@ public class registro_horario extends javax.swing.JFrame {
 
         jLabel2.setText(":");
 
-        jSpinner1.setModel(new javax.swing.SpinnerNumberModel(Byte.valueOf((byte)0), Byte.valueOf((byte)0), Byte.valueOf((byte)24), Byte.valueOf((byte)1)));
+        hour1_txt.setModel(new javax.swing.SpinnerNumberModel(0, 0, 23, 1));
 
-        jSpinner2.setModel(new javax.swing.SpinnerNumberModel(0, 0, 59, 1));
+        min1_txt.setModel(new javax.swing.SpinnerNumberModel(0, 0, 59, 1));
 
-        jSpinner3.setModel(new javax.swing.SpinnerNumberModel(0, 0, 59, 1));
+        min2S_txt.setModel(new javax.swing.SpinnerNumberModel(0, 0, 59, 1));
 
         jLabel4.setText(":");
 
-        jSpinner4.setModel(new javax.swing.SpinnerNumberModel(Byte.valueOf((byte)0), Byte.valueOf((byte)0), Byte.valueOf((byte)24), Byte.valueOf((byte)1)));
+        hourS_txt.setModel(new javax.swing.SpinnerNumberModel(0, 0, 23, 1));
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -98,19 +141,19 @@ public class registro_horario extends javax.swing.JFrame {
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(23, 23, 23)
-                        .addComponent(jSpinner4, javax.swing.GroupLayout.DEFAULT_SIZE, 77, Short.MAX_VALUE))
+                        .addComponent(hourS_txt, javax.swing.GroupLayout.DEFAULT_SIZE, 77, Short.MAX_VALUE))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jSpinner1)))
+                        .addComponent(hour1_txt)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 7, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 7, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jSpinner2, javax.swing.GroupLayout.DEFAULT_SIZE, 81, Short.MAX_VALUE)
-                    .addComponent(jSpinner3))
+                    .addComponent(min1_txt, javax.swing.GroupLayout.DEFAULT_SIZE, 81, Short.MAX_VALUE)
+                    .addComponent(min2S_txt))
                 .addGap(203, 203, 203))
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(173, 173, 173)
@@ -132,14 +175,14 @@ public class registro_horario extends javax.swing.JFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
                     .addComponent(jLabel2)
-                    .addComponent(jSpinner1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jSpinner2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(hour1_txt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(min1_txt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(25, 25, 25)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel4)
-                        .addComponent(jSpinner4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jSpinner3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(hourS_txt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(min2S_txt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jLabel6))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 63, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -181,6 +224,11 @@ public class registro_horario extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        String hour1 = formatHour((int) hour1_txt.getValue(), (int) min1_txt.getValue());
+        String hour2 = formatHour((int) hourS_txt.getValue(), (int) min2S_txt.getValue());
+        System.out.println(hour1);
+        System.out.println(hour2);
+        sendData(hour1, hour2);
         adminprincpial01 ap = new adminprincpial01();
         ap.setVisible(true);
         this.dispose();
@@ -222,6 +270,8 @@ public class registro_horario extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JSpinner hour1_txt;
+    private javax.swing.JSpinner hourS_txt;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
@@ -232,10 +282,8 @@ public class registro_horario extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JSpinner jSpinner1;
-    private javax.swing.JSpinner jSpinner2;
-    private javax.swing.JSpinner jSpinner3;
-    private javax.swing.JSpinner jSpinner4;
     private javax.swing.JTextArea jTextArea1;
+    private javax.swing.JSpinner min1_txt;
+    private javax.swing.JSpinner min2S_txt;
     // End of variables declaration//GEN-END:variables
 }

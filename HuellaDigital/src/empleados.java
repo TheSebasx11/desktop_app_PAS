@@ -53,6 +53,17 @@ public class empleados extends javax.swing.JFrame {
         return lista;
     }
 
+    private void MostrarBusqueda(ArrayList<EmpleadoModel> Lista) {
+        DTM = (DefaultTableModel) jTable2.getModel();
+        DTM.setRowCount(0);
+        for (EmpleadoModel emp : Lista) {
+            int fila = DTM.getRowCount();
+            DTM.setRowCount(fila + 1);
+            DTM.setValueAt(emp.toString(), fila, 0);
+
+        }
+    }
+
     public ArrayList<EmpleadoModel> llenarEmpleados() {
         ArrayList<EmpleadoModel> ListaEmpleados = new ArrayList<>();
         try {
@@ -77,17 +88,6 @@ public class empleados extends javax.swing.JFrame {
             System.out.println(e);
         }
         return ListaEmpleados;
-    }
-
-    private void MostrarBusqueda(ArrayList<EmpleadoModel> Lista) {
-        DTM = (DefaultTableModel) jTable2.getModel();
-        DTM.setRowCount(0);
-        for (EmpleadoModel emp : Lista) {
-            int fila = DTM.getRowCount();
-            DTM.setRowCount(fila + 1);
-            DTM.setValueAt(emp.toString(), fila, 0);
-
-        }
     }
 
     private void MostrarEmpleados(ArrayList<EmpleadoModel> Lista) {
