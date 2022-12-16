@@ -12,10 +12,11 @@
   </NonVisualComponents>
   <Properties>
     <Property name="defaultCloseOperation" type="int" value="3"/>
+    <Property name="resizable" type="boolean" value="false"/>
   </Properties>
   <SyntheticProperties>
     <SyntheticProperty name="formSizePolicy" type="int" value="1"/>
-    <SyntheticProperty name="generateCenter" type="boolean" value="false"/>
+    <SyntheticProperty name="generateCenter" type="boolean" value="true"/>
   </SyntheticProperties>
   <AuxValues>
     <AuxValue name="FormSettings_autoResourcing" type="java.lang.Integer" value="0"/>
@@ -119,10 +120,12 @@
                                           <Component id="txtDate" alignment="1" max="32767" attributes="0"/>
                                           <Component id="email_t" alignment="0" max="32767" attributes="0"/>
                                           <Group type="102" attributes="0">
-                                              <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                                  <Component id="cargo_menu" max="32767" attributes="0"/>
-                                                  <Component id="sex_menu" pref="106" max="32767" attributes="0"/>
-                                                  <Component id="sex_menu1" alignment="0" pref="106" max="32767" attributes="0"/>
+                                              <Group type="103" groupAlignment="0" attributes="0">
+                                                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                                      <Component id="cargo_menu" max="32767" attributes="0"/>
+                                                      <Component id="sex_menu" pref="106" max="32767" attributes="0"/>
+                                                  </Group>
+                                                  <Component id="hor_menu" alignment="0" min="-2" pref="173" max="-2" attributes="0"/>
                                               </Group>
                                               <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                                           </Group>
@@ -208,7 +211,7 @@
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="jLabel10" min="-2" max="-2" attributes="0"/>
-                          <Component id="sex_menu1" min="-2" max="-2" attributes="0"/>
+                          <Component id="hor_menu" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace type="separate" min="-2" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
@@ -360,7 +363,7 @@
                 <Property name="text" type="java.lang.String" value="Horario"/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JComboBox" name="sex_menu1">
+            <Component class="javax.swing.JComboBox" name="hor_menu">
               <Properties>
                 <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
                   <StringArray count="0"/>

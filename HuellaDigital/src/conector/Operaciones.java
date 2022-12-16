@@ -17,14 +17,19 @@ public class Operaciones {
     private ResultSet rs;
     private String SelectUserCargo;
     private String SelectCargos;
-     private String InsertUsuario;
-    
+    private String InsertUsuario;
+    private String BuscarEmpleado;
+
     public Operaciones() {
         st = null;
         rs = null;
         SelectUserCargo = "SELECT usuarios.*, cargos.nombre as Nombre_Cargo FROM `usuarios`, cargos WHERE usuarios.cargo = cargos.id_cargo";
         SelectCargos = "SELECT * FROM cargos;";
-          InsertUsuario = "INSERT INTO `usuarios`(`cargo`, `name_01`, `name_02`, `lastname01`, `lastname02`, `fecha_nac`, `identificacion`, `sexo`, `email`, `telefono`) VALUES (?,?,?,?,?,?,?,?,?,?)";
+        InsertUsuario = "INSERT INTO `usuarios`(`cargo`, `name_01`, `name_02`, `lastname01`, `lastname02`, `fecha_nac`, `identificacion`, `sexo`, `email`, `telefono`) VALUES (?,?,?,?,?,?,?,?,?,?)";
+    }
+
+    public String getBuscarEmpleado(String pattern) {
+        return "SELECT * FROM `usuarios` WHERE name_01 LIKE '%" + pattern + "%' or name_02 LIKE '%" + pattern + "%' or lastname01 LIKE '%" + pattern + "%' or lastname02 LIKE '%" + pattern + "%';";
     }
 
     public String getSelectCargos() {
@@ -42,7 +47,7 @@ public class Operaciones {
     public void setInsertUsuario(String InsertUsuario) {
         this.InsertUsuario = InsertUsuario;
     }
-    
+
     public PreparedStatement getSt() {
         return st;
     }

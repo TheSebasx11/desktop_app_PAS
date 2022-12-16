@@ -42,6 +42,10 @@ public class EmpleadoModel {
         this.telefono = telefono;
     }
 
+    public String getFullName() {
+        return name01 + " " + lastname01 + " " + lastname02;
+    }
+
     public int getIdusuarios() {
         return idusuarios;
     }
@@ -136,6 +140,11 @@ public class EmpleadoModel {
 
     public void setTelefono(int telefono) {
         this.telefono = telefono;
+    }
+
+    @Override
+    public String toString() {
+        return idusuarios + " - " + name01 + " " + name02 + " " + lastname01 + " " + lastname02;
     }
 
 }

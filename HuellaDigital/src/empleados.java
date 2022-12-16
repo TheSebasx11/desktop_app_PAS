@@ -26,6 +26,33 @@ public class empleados extends javax.swing.JFrame {
         DTM = (DefaultTableModel) jTable1.getModel();
     }
 
+    public ArrayList<EmpleadoModel> buscarEmpleados(String pattern) {
+        ArrayList<EmpleadoModel> lista = new ArrayList<>();
+        try {
+            quer.setSt(con.getConexion().prepareStatement(quer.getBuscarEmpleado(pattern)));
+            quer.setRs(quer.getSt().executeQuery());
+            while (quer.getRs().next()) {
+
+                EmpleadoModel emp = new EmpleadoModel(quer.getRs().getInt("idusuarios"),
+                        quer.getRs().getString("name_01"), quer.getRs().getInt("cargo"),
+                        quer.getRs().getString("name_01"), quer.getRs().getString("name_02"),
+                        quer.getRs().getString("lastname01"), quer.getRs().getString("lastname02"),
+                        quer.getRs().getString("fecha_nac"),
+                        quer.getRs().getString("identificacion"),
+                        quer.getRs().getString("sexo"),
+                        quer.getRs().getString("email"),
+                        quer.getRs().getInt("telefono")
+                );
+
+                lista.add(emp);
+            }
+
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        return lista;
+    }
+
     public ArrayList<EmpleadoModel> llenarEmpleados() {
         ArrayList<EmpleadoModel> ListaEmpleados = new ArrayList<>();
         try {
@@ -38,10 +65,10 @@ public class empleados extends javax.swing.JFrame {
                         quer.getRs().getString("name_01"), quer.getRs().getString("name_02"),
                         quer.getRs().getString("lastname01"), quer.getRs().getString("lastname02"),
                         quer.getRs().getString("fecha_nac"),
-                         quer.getRs().getString("identificacion"),
-                         quer.getRs().getString("sexo"),
-                         quer.getRs().getString("email"),
-                         quer.getRs().getInt("telefono")
+                        quer.getRs().getString("identificacion"),
+                        quer.getRs().getString("sexo"),
+                        quer.getRs().getString("email"),
+                        quer.getRs().getInt("telefono")
                 );
 
                 ListaEmpleados.add(emp);
@@ -52,8 +79,19 @@ public class empleados extends javax.swing.JFrame {
         return ListaEmpleados;
     }
 
-    private void MostrarEmpleados(ArrayList<EmpleadoModel> Lista) {
+    private void MostrarBusqueda(ArrayList<EmpleadoModel> Lista) {
+        DTM = (DefaultTableModel) jTable2.getModel();
+        DTM.setRowCount(0);
+        for (EmpleadoModel emp : Lista) {
+            int fila = DTM.getRowCount();
+            DTM.setRowCount(fila + 1);
+            DTM.setValueAt(emp.toString(), fila, 0);
 
+        }
+    }
+
+    private void MostrarEmpleados(ArrayList<EmpleadoModel> Lista) {
+        DTM = (DefaultTableModel) jTable1.getModel();
         DTM.setRowCount(0);
         for (EmpleadoModel emp : Lista) {
             int fila = DTM.getRowCount();
@@ -87,7 +125,7 @@ public class empleados extends javax.swing.JFrame {
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
-        jTextField1 = new javax.swing.JTextField();
+        search_input = new javax.swing.JTextField();
         jPanel4 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable2 = new javax.swing.JTable();
@@ -153,9 +191,9 @@ public class empleados extends javax.swing.JFrame {
             }
         });
 
-        jTextField1.addActionListener(new java.awt.event.ActionListener() {
+        search_input.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField1ActionPerformed(evt);
+                search_inputActionPerformed(evt);
             }
         });
 
@@ -168,7 +206,7 @@ public class empleados extends javax.swing.JFrame {
                 .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(search_input, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel1))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -179,23 +217,27 @@ public class empleados extends javax.swing.JFrame {
                 .addComponent(jLabel1)
                 .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(search_input, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jTable2.setFont(new java.awt.Font("Times New Roman", 0, 24)); // NOI18N
         jTable2.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null},
-                {null},
-                {null},
-                {null}
+
             },
             new String [] {
                 "Informacion"
             }
-        ));
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+        });
         jScrollPane1.setViewportView(jTable2);
 
         jButton5.setFont(new java.awt.Font("Comic Sans MS", 0, 18)); // NOI18N
@@ -352,6 +394,7 @@ public class empleados extends javax.swing.JFrame {
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
@@ -360,12 +403,13 @@ public class empleados extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_jButton4ActionPerformed
 
-    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField1ActionPerformed
+    private void search_inputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_search_inputActionPerformed
+        MostrarBusqueda(buscarEmpleados(search_input.getText()));
+    }//GEN-LAST:event_search_inputActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
+        MostrarBusqueda(buscarEmpleados(search_input.getText()));
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
@@ -436,6 +480,6 @@ public class empleados extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable jTable1;
     private javax.swing.JTable jTable2;
-    private javax.swing.JTextField jTextField1;
+    private javax.swing.JTextField search_input;
     // End of variables declaration//GEN-END:variables
 }

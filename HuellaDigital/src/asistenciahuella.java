@@ -388,6 +388,7 @@ public class asistenciahuella extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(204, 0, 0));
+        setResizable(false);
 
         jPanel3.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -509,7 +510,7 @@ public class asistenciahuella extends javax.swing.JFrame {
                                 .addGroup(jPanel3Layout.createSequentialGroup()
                                     .addGap(50, 50, 50)
                                     .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 392, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                        .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, 842, Short.MAX_VALUE))
+                        .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
         );
         jPanel3Layout.setVerticalGroup(

@@ -8,6 +8,9 @@
  * @author Jose Perez
  */
 import conector.*;
+import java.util.ArrayList;
+import javax.swing.table.DefaultTableModel;
+import modelos.EmpleadoModel;
 
 public class ventana01 extends javax.swing.JFrame {
 
@@ -16,17 +19,24 @@ public class ventana01 extends javax.swing.JFrame {
      */
     private conexion con;
     private Operaciones ope;
-    String cantUser_query = "SELECT COUNT(*) AS Cantidad_Usuarios FROM usuarios INNER JOIN usuarios_has_horarios as UH ON UH.usuarios_idusuarios = usuarios.idusuarios;";
-    String cantAsist_query = "SELECT COUNT(turnos.llegada) as Asistencia FROM turnos, usuarios INNER JOIN usuarios_has_horarios AS U ON U.usuarios_idusuarios = usuarios.idusuarios WHERE turnos.usuarios_idusuarios = usuarios.idusuarios";
-
+    private String cantUser_query = "SELECT COUNT(*) AS Cantidad_Usuarios FROM usuarios INNER JOIN usuarios_has_horarios as UH ON UH.usuarios_idusuarios = usuarios.idusuarios;";
+    private String cantAsist_query = "SELECT COUNT(turnos.llegada) as Asistencia FROM turnos, usuarios INNER JOIN usuarios_has_horarios AS U ON U.usuarios_idusuarios = usuarios.idusuarios WHERE turnos.usuarios_idusuarios = usuarios.idusuarios";
+    private String cantTrabaj = "SELECT COUNT(U.idusuarios) as Trabajando FROM usuarios as U  WHERE U.idusuarios IN (SELECT usuarios.idusuarios from usuarios  INNER JOIN turnos as T ON T.usuarios_idusuarios = usuarios.idusuarios WHERE T.salida IS NULL);";
+    private String status_query = "SELECT CONCAT(u.name_01 , \" \" , u.name_02) as nombres , CONCAT(u.lastname01, \" \", u.lastname02) as Apellidos,  t.llegada, t.salida from turnos as t, usuarios as u WHERE t.usuarios_idusuarios = u.idusuarios;";
     int cantidadUsuarios = 0;
     int cantAsistencia = 0;
+    int cantTrabajando = 0;
+
+    public Operaciones quer;
+    private DefaultTableModel DTM;
 
     public ventana01() {
         initComponents();
         con = new conexion();
         ope = new Operaciones();
+        quer = new Operaciones();
         MostrarCantidad();
+        llenarInforme();
     }
 
     public void MostrarCantidad() {
@@ -43,11 +53,47 @@ public class ventana01 extends javax.swing.JFrame {
             while (ope.getRs().next()) {
                 cantAsistencia = ope.getRs().getInt("Asistencia");
             }
+            ope = new Operaciones();
+            ope.setSt(con.getConexion().prepareStatement(cantTrabaj));
+            ope.setRs(ope.getSt().executeQuery(cantTrabaj));
+            while (ope.getRs().next()) {
+                cantTrabajando = ope.getRs().getInt("Trabajando");
+            }
             asist_label.setText("Asistencia Empleados " + cantAsistencia);
             total_emp.setText("Total de empleados: " + cantidadUsuarios);
+            cant_trabaj.setText("Cantidad Trabajando: " + cantTrabajando);
         } catch (Exception e) {
             System.out.println(e);
         }
+    }
+
+    public void llenarInforme() {
+        ArrayList<EmpleadoModel> ListaEmpleados = new ArrayList<>();
+        DTM = (DefaultTableModel) jTable2.getModel();
+        DTM.setRowCount(0);
+        try {
+            quer.setSt(con.getConexion().prepareStatement(status_query));
+            quer.setRs(quer.getSt().executeQuery());
+            while (quer.getRs().next()) {
+                int fila = DTM.getRowCount();
+                DTM.setRowCount(fila + 1);
+                DTM.setValueAt(quer.getRs().getString("nombres"), fila, 0);
+                DTM.setValueAt(quer.getRs().getString("Apellidos"), fila, 1);
+                DTM.setValueAt(quer.getRs().getString("llegada"), fila, 2);
+                if (quer.getRs().getString("salida") == null) {
+                    DTM.setValueAt("---", fila, 3);
+                    DTM.setValueAt("Trabajando", fila, 4);
+                } else {
+                    DTM.setValueAt(quer.getRs().getString("salida"), fila, 3);
+                    DTM.setValueAt("Finalizado", fila, 4);
+                }
+
+            }
+
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+
     }
 
     /**
@@ -79,7 +125,7 @@ public class ventana01 extends javax.swing.JFrame {
         jPanel5 = new javax.swing.JPanel();
         asist_label = new javax.swing.JLabel();
         jPanel6 = new javax.swing.JPanel();
-        jLabel7 = new javax.swing.JLabel();
+        cant_trabaj = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         jTable2 = new javax.swing.JTable();
@@ -307,9 +353,9 @@ public class ventana01 extends javax.swing.JFrame {
 
         jPanel6.setBackground(new java.awt.Color(204, 0, 0));
 
-        jLabel7.setFont(new java.awt.Font("Comic Sans MS", 0, 16)); // NOI18N
-        jLabel7.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel7.setText("Porcentaje de empleados");
+        cant_trabaj.setFont(new java.awt.Font("Comic Sans MS", 0, 16)); // NOI18N
+        cant_trabaj.setForeground(new java.awt.Color(255, 255, 255));
+        cant_trabaj.setText("Cantidad trabajando");
 
         jLabel8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/porcentaje_asistencia.png"))); // NOI18N
 
@@ -317,58 +363,46 @@ public class ventana01 extends javax.swing.JFrame {
         jPanel6.setLayout(jPanel6Layout);
         jPanel6Layout.setHorizontalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(100, 100, 100))
             .addGroup(jPanel6Layout.createSequentialGroup()
-                .addGap(44, 44, 44)
-                .addComponent(jLabel7)
-                .addContainerGap(39, Short.MAX_VALUE))
+                .addContainerGap()
+                .addComponent(cant_trabaj)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 31, Short.MAX_VALUE)
+                .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel6Layout.createSequentialGroup()
                 .addGap(29, 29, 29)
-                .addComponent(jLabel7)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(8, Short.MAX_VALUE))
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cant_trabaj))
+                .addContainerGap(43, Short.MAX_VALUE))
         );
 
         jTable2.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null}
+
             },
             new String [] {
-                "Nombre", "Asistencia", "Porcentaje de asistencia"
+                "Nombres", "Apellidos", "Llegada", "Salida", "Estado"
             }
-        ));
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         jScrollPane2.setViewportView(jTable2);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -490,6 +524,7 @@ public class ventana01 extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel asist_label;
+    private javax.swing.JLabel cant_trabaj;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
@@ -499,7 +534,6 @@ public class ventana01 extends javax.swing.JFrame {
     private javax.swing.JButton jButton7;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;

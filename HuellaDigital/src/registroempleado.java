@@ -12,11 +12,13 @@ import com.raven.datechooser.SelectedDate;
 import modelos.*;
 import conector.*;
 import java.util.ArrayList;
+import java.util.Date;
 import javax.swing.JOptionPane;
 
 public class registroempleado extends javax.swing.JFrame {
 
     ArrayList<CargoModelo> cargos = new ArrayList<CargoModelo>();
+    ArrayList<HorarioModelo> horarios = new ArrayList<HorarioModelo>();
     private Operaciones ope;
     private conexion con;
 
@@ -59,6 +61,17 @@ public class registroempleado extends javax.swing.JFrame {
                 cargo_menu.addItem(E.getNombre());
             });
             ope = new Operaciones();
+            ope.setSt(con.getConexion().prepareStatement("SELECT * FROM horarios"));
+            ope.setRs(ope.getSt().executeQuery("SELECT * FROM horarios"));
+            while (ope.getRs().next()) {
+                HorarioModelo horario = new HorarioModelo(ope.getRs().getInt("idhorarios"), ope.getRs().getString("hora_inicio"), ope.getRs().getString("hora_fin"));
+                horarios.add(horario);
+            }
+
+            horarios.forEach((E) -> {
+                hor_menu.addItem(E.getHoraInicio() + " - " + E.getHoraFin());
+            });
+            ope = new Operaciones();
         } catch (Exception e) {
         }
     }
@@ -95,7 +108,7 @@ public class registroempleado extends javax.swing.JFrame {
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jLabel10 = new javax.swing.JLabel();
-        sex_menu1 = new javax.swing.JComboBox<>();
+        hor_menu = new javax.swing.JComboBox<>();
         jLabel11 = new javax.swing.JLabel();
         name2_t = new javax.swing.JTextField();
         jLabel12 = new javax.swing.JLabel();
@@ -104,6 +117,7 @@ public class registroempleado extends javax.swing.JFrame {
         date.setTextRefernce(txtDate);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setResizable(false);
 
         jPanel3.setBackground(new java.awt.Color(204, 0, 0));
 
@@ -209,10 +223,11 @@ public class registroempleado extends javax.swing.JFrame {
                                     .addComponent(txtDate, javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addComponent(email_t)
                                     .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                            .addComponent(cargo_menu, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                            .addComponent(sex_menu, 0, 106, Short.MAX_VALUE)
-                                            .addComponent(sex_menu1, 0, 106, Short.MAX_VALUE))
+                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                                .addComponent(cargo_menu, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                .addComponent(sex_menu, 0, 106, Short.MAX_VALUE))
+                                            .addComponent(hor_menu, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE))
                                         .addGap(0, 0, Short.MAX_VALUE))))
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -274,7 +289,7 @@ public class registroempleado extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel10)
-                    .addComponent(sex_menu1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(hor_menu, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -310,6 +325,7 @@ public class registroempleado extends javax.swing.JFrame {
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void ape1_txActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ape1_txActionPerformed
@@ -334,7 +350,7 @@ public class registroempleado extends javax.swing.JFrame {
             case 0:
                 sex = "M";
                 break;
-            case 1: 
+            case 1:
                 sex = "H";
                 break;
         }
@@ -387,6 +403,7 @@ public class registroempleado extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> cargo_menu;
     private com.raven.datechooser.DateChooser date;
     private javax.swing.JTextField email_t;
+    private javax.swing.JComboBox<String> hor_menu;
     private javax.swing.JTextField iden_txt;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
@@ -407,7 +424,6 @@ public class registroempleado extends javax.swing.JFrame {
     private javax.swing.JTextField name1_t;
     private javax.swing.JTextField name2_t;
     private javax.swing.JComboBox<String> sex_menu;
-    private javax.swing.JComboBox<String> sex_menu1;
     private javax.swing.JTextField tel_t;
     private javax.swing.JTextField txtDate;
     // End of variables declaration//GEN-END:variables

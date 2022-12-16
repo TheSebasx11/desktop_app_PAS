@@ -40,6 +40,7 @@ public class adminprincpial01 extends javax.swing.JFrame {
         jPanel5 = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setResizable(false);
 
         jPanel3.setBackground(new java.awt.Color(204, 0, 0));
 
@@ -221,6 +222,7 @@ public class adminprincpial01 extends javax.swing.JFrame {
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
@@ -267,6 +269,9 @@ public class adminprincpial01 extends javax.swing.JFrame {
 
     private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
         // TODO add your handling code here:
+        gen_report gen = new gen_report();
+        gen.setVisible(true);
+        this.dispose();;
     }//GEN-LAST:event_jButton8ActionPerformed
 
     /**
