@@ -1,4 +1,6 @@
 -- phpMyAdmin SQL Dump
+Drop database control_asistencia;
+CREATE database control_asistencia;
 -- version 5.1.3
 -- https://www.phpmyadmin.net/
 --

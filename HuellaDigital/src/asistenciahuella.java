@@ -22,10 +22,23 @@ import static com.digitalpersona.onetouch.processing.DPFPTemplateStatus.TEMPLATE
 import static com.digitalpersona.onetouch.processing.DPFPTemplateStatus.TEMPLATE_STATUS_READY;
 import com.digitalpersona.onetouch.verification.DPFPVerification;
 import com.digitalpersona.onetouch.verification.DPFPVerificationResult;
+import com.github.sarxos.webcam.Webcam;
+import com.github.sarxos.webcam.WebcamPanel;
+import com.github.sarxos.webcam.WebcamResolution;
 import com.mysql.jdbc.PreparedStatement;
 import conector.conexion;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Image;
+import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.imageio.ImageIO;
+import javax.imageio.stream.FileImageInputStream;
+import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
@@ -52,10 +65,41 @@ public class asistenciahuella extends javax.swing.JFrame {
     public DPFPFeatureSet featuresVerificacion;
     public conexion conect;
 
+    BufferedImage ruta;
+    int largo = 400;
+    int ancho = 300;
+    int contador = 0;
+    Dimension dimension = new Dimension(largo, ancho);
+    Webcam webcam = Webcam.getDefault();
+    WebcamPanel webcamPanel = new WebcamPanel(webcam, dimension, false);
+
+    Dimension dimension1 = WebcamResolution.VGA.getSize();
+
     public asistenciahuella() {
         initComponents();
         conect = new conexion();
-        
+
+        webcam.setViewSize(dimension1);
+        webcamPanel.setFillArea(true);
+        pnlCamara.setLayout(new FlowLayout());
+        pnlCamara.add(webcamPanel);
+
+        System.out.println(webcam.toString());
+        take_b.setEnabled(false);
+
+    }
+
+    public void hilo() {
+        Thread hilo = new Thread() {
+            @Override
+            public void run() {
+                super.run();
+                webcamPanel.start();
+            }
+
+        };
+        hilo.setDaemon(true);
+        hilo.start();
     }
 
     public void EnviarTexto(String msg) {
@@ -125,13 +169,14 @@ public class asistenciahuella extends javax.swing.JFrame {
     public void identificarHuella() throws Exception {
         try {
             conect.Conectar();
-            java.sql.PreparedStatement identificarStmt = conect.getConexion().prepareStatement("SELECT huenombre, huehuella FROM huellas");
+            java.sql.PreparedStatement identificarStmt = conect.getConexion().prepareStatement("SELECT * FROM huellas as H, usuarios as U WHERE H.usuarios_idusuarios = U.idusuarios;");//("SELECT huenombre, huehuella FROM huellas");
 
             java.sql.ResultSet rs = identificarStmt.executeQuery();
 
             while (rs.next()) {
                 byte templateBuffer[] = rs.getBytes("huehuella");
-                String nombre = rs.getString("huenombre");
+                String nombre = rs.getString("name_01") + " " + rs.getString("lastname01")
+                        + " " + rs.getString("lastname02"); //rs.getString("huenombre");
 
                 DPFPTemplate referenceTemplate = DPFPGlobal.getTemplateFactory().createTemplate(templateBuffer);
 
@@ -140,6 +185,7 @@ public class asistenciahuella extends javax.swing.JFrame {
                 DPFPVerificationResult result = Verificador.verify(featuresVerificacion, getTemplate());
 
                 if (result.isVerified()) {
+                    //EnviarTexto("Las huellas capturada es de " + nombre);
                     JOptionPane.showMessageDialog(null, "Las huellas capturada es de " + nombre, "Verificación de huella", JOptionPane.INFORMATION_MESSAGE);
 
                     return;
@@ -220,7 +266,13 @@ public class asistenciahuella extends javax.swing.JFrame {
                     case TEMPLATE_STATUS_READY:
                         stop();
                         setTemplate(Reclutador.getTemplate());
-                        EnviarTexto("La plantilla ha sido creada pai");
+                        EnviarTexto("La plantilla de la huella ha sido creada");
+                        try {
+                            identificarHuella();
+                            Reclutador.clear();
+                        } catch (Exception e) {
+                            System.err.println(e);
+                        }
                         break;
                     case TEMPLATE_STATUS_FAILED:
                         Reclutador.clear();
@@ -329,7 +381,10 @@ public class asistenciahuella extends javax.swing.JFrame {
         jButton3 = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         lbImage = new javax.swing.JLabel();
-        jPanel2 = new javax.swing.JPanel();
+        pnlCamara = new javax.swing.JPanel();
+        fotoLabel = new javax.swing.JLabel();
+        start_c = new javax.swing.JButton();
+        take_b = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(204, 0, 0));
@@ -338,10 +393,10 @@ public class asistenciahuella extends javax.swing.JFrame {
 
         jLabel1.setBackground(new java.awt.Color(255, 255, 255));
         jLabel1.setFont(new java.awt.Font("Comic Sans MS", 0, 48)); // NOI18N
-        jLabel1.setText("Registrar horario");
+        jLabel1.setText("Registrar turno");
 
         jButton1.setFont(new java.awt.Font("Comic Sans MS", 0, 18)); // NOI18N
-        jButton1.setText("Registrar asistencia");
+        jButton1.setText("Comenzar Lectura");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
@@ -391,18 +446,35 @@ public class asistenciahuella extends javax.swing.JFrame {
                 .addComponent(lbImage, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE))
         );
 
-        jPanel2.setBackground(new java.awt.Color(153, 153, 153));
+        pnlCamara.setBackground(new java.awt.Color(153, 153, 153));
+        pnlCamara.setPreferredSize(new java.awt.Dimension(400, 300));
 
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+        javax.swing.GroupLayout pnlCamaraLayout = new javax.swing.GroupLayout(pnlCamara);
+        pnlCamara.setLayout(pnlCamaraLayout);
+        pnlCamaraLayout.setHorizontalGroup(
+            pnlCamaraLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(fotoLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 400, Short.MAX_VALUE)
         );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 200, Short.MAX_VALUE)
+        pnlCamaraLayout.setVerticalGroup(
+            pnlCamaraLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(fotoLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 300, Short.MAX_VALUE)
         );
+
+        start_c.setFont(new java.awt.Font("Comic Sans MS", 0, 18)); // NOI18N
+        start_c.setText("Comenzar camara");
+        start_c.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                start_cActionPerformed(evt);
+            }
+        });
+
+        take_b.setFont(new java.awt.Font("Comic Sans MS", 0, 18)); // NOI18N
+        take_b.setText("Tomar foto");
+        take_b.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                take_bActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -411,7 +483,13 @@ public class asistenciahuella extends javax.swing.JFrame {
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGap(248, 248, 248)
                 .addComponent(jLabel1)
-                .addContainerGap(226, Short.MAX_VALUE))
+                .addContainerGap(259, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(start_c, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(take_b, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(24, 24, 24))
             .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel3Layout.createSequentialGroup()
                     .addContainerGap()
@@ -425,9 +503,9 @@ public class asistenciahuella extends javax.swing.JFrame {
                             .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addGroup(jPanel3Layout.createSequentialGroup()
                                     .addGap(42, 42, 42)
-                                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(saveB, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(pnlCamara, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(saveB)))
                                 .addGroup(jPanel3Layout.createSequentialGroup()
                                     .addGap(50, 50, 50)
                                     .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 392, javax.swing.GroupLayout.PREFERRED_SIZE))))
@@ -439,7 +517,11 @@ public class asistenciahuella extends javax.swing.JFrame {
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGap(39, 39, 39)
                 .addComponent(jLabel1)
-                .addContainerGap(584, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(start_c)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(take_b)
+                .addContainerGap(547, Short.MAX_VALUE))
             .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel3Layout.createSequentialGroup()
                     .addGap(128, 128, 128)
@@ -453,7 +535,7 @@ public class asistenciahuella extends javax.swing.JFrame {
                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                     .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(pnlCamara, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGap(23, 23, 23)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -475,6 +557,7 @@ public class asistenciahuella extends javax.swing.JFrame {
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
@@ -486,6 +569,11 @@ public class asistenciahuella extends javax.swing.JFrame {
 
     private void saveBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveBActionPerformed
         // TODO add your handling code here:
+
+        File file = new File(".\\src\\imagenes\\foto.jpg");
+        System.out.println(file.getParent());
+
+
     }//GEN-LAST:event_saveBActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
@@ -493,6 +581,41 @@ public class asistenciahuella extends javax.swing.JFrame {
         principal.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void start_cActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_start_cActionPerformed
+        Thread hilo = new Thread() {
+            @Override
+            public void run() {
+                super.run();
+                webcamPanel.start();
+            }
+
+        };
+        hilo.setDaemon(true);
+        hilo.start();
+        start_c.setEnabled(false);
+        take_b.setEnabled(true);
+    }//GEN-LAST:event_start_cActionPerformed
+
+    private void take_bActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_take_bActionPerformed
+        // TODO add your handling code here:
+
+        ImageIcon foto;
+        foto = new ImageIcon(webcam.getImage());
+        Icon iconoFoto = new ImageIcon(foto.getImage().getScaledInstance(dimension.width, dimension.height, Image.SCALE_SMOOTH));
+        fotoLabel.setIcon(iconoFoto);
+
+        ruta = webcam.getImage();
+
+        File salidaImagen = new File(".\\src\\imagenes\\foto.jpg");
+
+        try {
+            ImageIO.write(ruta, "jpg", salidaImagen);
+            EnviarTexto("Imagen guardad en: " + salidaImagen.getAbsolutePath());
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+    }//GEN-LAST:event_take_bActionPerformed
 
     /**
      * @param args the command line arguments
@@ -530,17 +653,20 @@ public class asistenciahuella extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel fotoLabel;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextArea jTextArea1;
     private javax.swing.JLabel lbImage;
+    private javax.swing.JPanel pnlCamara;
     private javax.swing.JButton saveB;
+    private javax.swing.JButton start_c;
+    private javax.swing.JButton take_b;
     // End of variables declaration//GEN-END:variables
 }
