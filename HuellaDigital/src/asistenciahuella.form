@@ -70,7 +70,7 @@
                                       <EmptySpace min="-2" pref="42" max="-2" attributes="0"/>
                                       <Group type="103" groupAlignment="0" max="-2" attributes="0">
                                           <Component id="jPanel2" min="-2" max="-2" attributes="0"/>
-                                          <Component id="jButton2" min="-2" pref="400" max="-2" attributes="0"/>
+                                          <Component id="saveB" min="-2" pref="400" max="-2" attributes="0"/>
                                       </Group>
                                   </Group>
                                   <Group type="102" alignment="0" attributes="0">
@@ -98,7 +98,7 @@
                       <EmptySpace min="-2" pref="128" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="jButton1" alignment="3" min="-2" pref="51" max="-2" attributes="0"/>
-                          <Component id="jButton2" alignment="3" min="-2" pref="51" max="-2" attributes="0"/>
+                          <Component id="saveB" alignment="3" min="-2" pref="51" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace min="-2" pref="35" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
@@ -143,7 +143,7 @@
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton1ActionPerformed"/>
           </Events>
         </Component>
-        <Component class="javax.swing.JButton" name="jButton2">
+        <Component class="javax.swing.JButton" name="saveB">
           <Properties>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Comic Sans MS" size="18" style="0"/>
@@ -151,7 +151,7 @@
             <Property name="text" type="java.lang.String" value="Registrar turno"/>
           </Properties>
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton2ActionPerformed"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="saveBActionPerformed"/>
           </Events>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel2">
@@ -181,7 +181,6 @@
               <Properties>
                 <Property name="columns" type="int" value="20"/>
                 <Property name="rows" type="int" value="5"/>
-                <Property name="text" type="java.lang.String" value="Aqu&#xed; ir&#xe1; la informaci&#xf3;n del registroAqu&#xed; ir&#xe1; la informaci&#xf3;n del registroaaaaaaaaaAqu&#xed; ir&#xe1; la informaci&#xf3;n del registroAqu&#xed; ir&#xe1; la informaci&#xf3;n del registroaaaaaaaaa&#xa;Aqu&#xed; ir&#xe1; la informaci&#xf3;n del registroAqu&#xed; ir&#xe1; la informaci&#xf3;n del registroaaaaaaaaaAqu&#xed; ir&#xe1; la informaci&#xf3;n del registroAqu&#xed; ir&#xe1; la informaci&#xf3;n del registroaaaaaaaaa&#xa;Aqu&#xed; ir&#xe1; la informaci&#xf3;n del registroAqu&#xed; ir&#xe1; la informaci&#xf3;n del registroaaaaaaaaaAqu&#xed; ir&#xe1; la informaci&#xf3;n del registroAqu&#xed; ir&#xe1; la informaci&#xf3;n del registroaaaaaaaaa&#xa;Aqu&#xed; ir&#xe1; la informaci&#xf3;n del registroAqu&#xed; ir&#xe1; la informaci&#xf3;n del registroaaaaaaaaaAqu&#xed; ir&#xe1; la informaci&#xf3;n del registroAqu&#xed; ir&#xe1; la informaci&#xf3;n del registroaaaaaaaaa&#xa;Aqu&#xed; ir&#xe1; la informaci&#xf3;n del registroAqu&#xed; ir&#xe1; la informaci&#xf3;n del registroaaaaaaaaaAqu&#xed; ir&#xe1; la informaci&#xf3;n del registroAqu&#xed; ir&#xe1; la informaci&#xf3;n del registroaaaaaaaaa"/>
               </Properties>
             </Component>
           </SubComponents>
@@ -208,14 +207,24 @@
             <DimensionLayout dim="0">
               <Group type="103" groupAlignment="0" attributes="0">
                   <EmptySpace min="0" pref="400" max="32767" attributes="0"/>
+                  <Group type="103" rootIndex="1" groupAlignment="0" attributes="0">
+                      <Component id="lbImage" alignment="0" pref="400" max="32767" attributes="0"/>
+                  </Group>
               </Group>
             </DimensionLayout>
             <DimensionLayout dim="1">
               <Group type="103" groupAlignment="0" attributes="0">
                   <EmptySpace min="0" pref="200" max="32767" attributes="0"/>
+                  <Group type="103" rootIndex="1" groupAlignment="0" attributes="0">
+                      <Component id="lbImage" alignment="1" pref="200" max="32767" attributes="0"/>
+                  </Group>
               </Group>
             </DimensionLayout>
           </Layout>
+          <SubComponents>
+            <Component class="javax.swing.JLabel" name="lbImage">
+            </Component>
+          </SubComponents>
         </Container>
         <Container class="javax.swing.JPanel" name="jPanel2">
           <Properties>
