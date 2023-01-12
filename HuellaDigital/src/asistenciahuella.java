@@ -1,4 +1,4 @@
-
+/*
 import com.digitalpersona.onetouch.DPFPDataPurpose;
 import com.digitalpersona.onetouch.DPFPFeatureSet;
 import com.digitalpersona.onetouch.DPFPGlobal;
@@ -19,7 +19,7 @@ import com.digitalpersona.onetouch.processing.DPFPImageQualityException;
 import static com.digitalpersona.onetouch.processing.DPFPTemplateStatus.TEMPLATE_STATUS_FAILED;
 import static com.digitalpersona.onetouch.processing.DPFPTemplateStatus.TEMPLATE_STATUS_READY;
 import com.digitalpersona.onetouch.verification.DPFPVerification;
-import com.digitalpersona.onetouch.verification.DPFPVerificationResult;
+import com.digitalpersona.onetouch.verification.DPFPVerificationResult;*/
 import com.github.sarxos.webcam.Webcam;
 import com.github.sarxos.webcam.WebcamPanel;
 import com.github.sarxos.webcam.WebcamResolution;
@@ -55,22 +55,22 @@ public class asistenciahuella extends javax.swing.JFrame {
     /**
      * Creates new form asistenciahuella
      */
-    private DPFPCapture Lector = DPFPGlobal.getCaptureFactory().createCapture();
+    /*private DPFPCapture Lector = DPFPGlobal.getCaptureFactory().createCapture();
     private DPFPEnrollment Reclutador = DPFPGlobal.getEnrollmentFactory().createEnrollment();
     private DPFPVerification Verificador = DPFPGlobal.getVerificationFactory().createVerification();
     private DPFPTemplate template;
     public static String TEMPLATE_PROPERTY = "template";
     public DPFPFeatureSet featuresInscripcion;
-    public DPFPFeatureSet featuresVerificacion;
+    public DPFPFeatureSet featuresVerificacion;*/
     public conexion conect;
-    
+
     private Operaciones ope;
     private conexion con;
-    
+
     int idHuella = 0;
     boolean HuellaCaptured = false;
     boolean fotoCaptured = false;
-    
+
     BufferedImage ruta;
     int largo = 400;
     int ancho = 300;
@@ -78,27 +78,27 @@ public class asistenciahuella extends javax.swing.JFrame {
     Dimension dimension = new Dimension(largo, ancho);
     Webcam webcam = Webcam.getDefault();
     WebcamPanel webcamPanel = new WebcamPanel(webcam, dimension, false);
-    
+
     Dimension dimension1 = WebcamResolution.VGA.getSize();
-    
+
     public asistenciahuella() {
         initComponents();
         conect = new conexion();
-        
+
         webcam.setViewSize(dimension1);
         webcamPanel.setFillArea(true);
         pnlCamara.setLayout(new FlowLayout());
         pnlCamara.add(webcamPanel);
-        
+
         System.out.println(webcam.toString());
         take_b.setEnabled(false);
         saveB.setEnabled(false);
-        
+
         ope = new Operaciones();
         con = new conexion();
-        
+
     }
-    
+
     public void hilo() {
         Thread hilo = new Thread() {
             @Override
@@ -106,16 +106,17 @@ public class asistenciahuella extends javax.swing.JFrame {
                 super.run();
                 webcamPanel.start();
             }
-            
+
         };
         hilo.setDaemon(true);
         hilo.start();
     }
-    
+
     public void EnviarTexto(String msg) {
         jTextArea1.append(msg + "\n");
     }
-    
+
+   /*
     public void guardarHuella() throws Exception {
         ByteArrayInputStream datosHuella = new ByteArrayInputStream(template.serialize());
         Integer tamHuella = template.serialize().length;
@@ -375,12 +376,12 @@ public class asistenciahuella extends javax.swing.JFrame {
             }
         });
     }
-    
+     
     private void closeAll() {
         webcam.close();
         webcamPanel.stop();
     }
-    
+
     private void sendData(int id, File image) {
         FileInputStream fis = null;
         try {
@@ -391,12 +392,12 @@ public class asistenciahuella extends javax.swing.JFrame {
             byte b[] = new byte[(int) image.length()];
             fis.read(b);
             java.sql.Blob b2 = new SerialBlob(b);
-            
+
             ope.getSt().setInt(1, id);
             ope.getSt().setBlob(2, b2);
-            
+
             ope.setRs(ope.getSt().executeQuery());
-            
+
             while (ope.getRs().next()) {
                 JOptionPane.showMessageDialog(null, ope.getRs().getString("msg"));
             }
@@ -404,8 +405,8 @@ public class asistenciahuella extends javax.swing.JFrame {
         } catch (Exception e) {
             System.out.println(e);
         }
-        
-    }
+
+    }*/
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -610,9 +611,9 @@ public class asistenciahuella extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
         jButton1.setEnabled(false);
-        Iniciar();
+         /*Iniciar();
         start();
-        EstadoHuellas();
+        EstadoHuellas();*/
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void saveBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveBActionPerformed
@@ -620,8 +621,8 @@ public class asistenciahuella extends javax.swing.JFrame {
 
         File file = new File(".\\src\\imagenes\\foto.jpg");
         System.out.println(file.getParent());
-        sendData(idHuella, file);
-        closeAll();
+        /*sendData(idHuella, file);
+        closeAll();*/
         ventana01 principal = new ventana01();
         principal.setVisible(true);
         this.dispose();
@@ -641,7 +642,7 @@ public class asistenciahuella extends javax.swing.JFrame {
                 super.run();
                 webcamPanel.start();
             }
-            
+
         };
         hilo.setDaemon(true);
         hilo.start();
@@ -656,11 +657,11 @@ public class asistenciahuella extends javax.swing.JFrame {
         foto = new ImageIcon(webcam.getImage());
         Icon iconoFoto = new ImageIcon(foto.getImage().getScaledInstance(dimension.width, dimension.height, Image.SCALE_SMOOTH));
         fotoLabel.setIcon(iconoFoto);
-        
+
         ruta = webcam.getImage();
-        
+
         File salidaImagen = new File(".\\src\\imagenes\\foto.jpg");
-        
+
         try {
             ImageIO.write(ruta, "jpg", salidaImagen);
             EnviarTexto("Imagen guardad en: " + salidaImagen.getAbsolutePath());
@@ -687,21 +688,21 @@ public class asistenciahuella extends javax.swing.JFrame {
                 if ("Windows".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
-                    
+
                 }
             }
         } catch (ClassNotFoundException ex) {
             java.util.logging.Logger.getLogger(asistenciahuella.class
                     .getName()).log(java.util.logging.Level.SEVERE, null, ex);
-            
+
         } catch (InstantiationException ex) {
             java.util.logging.Logger.getLogger(asistenciahuella.class
                     .getName()).log(java.util.logging.Level.SEVERE, null, ex);
-            
+
         } catch (IllegalAccessException ex) {
             java.util.logging.Logger.getLogger(asistenciahuella.class
                     .getName()).log(java.util.logging.Level.SEVERE, null, ex);
-            
+
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(asistenciahuella.class
                     .getName()).log(java.util.logging.Level.SEVERE, null, ex);

@@ -3,10 +3,15 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/Rusbel/Documents/NetbeansProjects/desktop_app_PAS/HuellaDigital/src/asistenciahuella.java</file>
-            <file>file:/C:/Users/Rusbel/Documents/NetbeansProjects/desktop_app_PAS/HuellaDigital/build.xml</file>
-            <file>file:/C:/Users/Rusbel/Documents/NetbeansProjects/desktop_app_PAS/HuellaDigital/src/registroempleado.java</file>
-            <file>file:/C:/Users/Rusbel/Documents/NetbeansProjects/desktop_app_PAS/HuellaDigital/src/clases/CapturaHuella.java</file>
+            <file>file:/C:/Users/sebab/Documents/GitHub/desktop_app_PAS/HuellaDigital/src/conector/Operaciones.java</file>
+            <file>file:/C:/Users/sebab/Documents/GitHub/desktop_app_PAS/HuellaDigital/src/empleados.java</file>
+            <file>file:/C:/Users/sebab/Documents/GitHub/desktop_app_PAS/HuellaDigital/src/consul_horario.java</file>
+            <file>file:/C:/Users/sebab/Documents/GitHub/desktop_app_PAS/HuellaDigital/src/asignar_huella.java</file>
+            <file>file:/C:/Users/sebab/Documents/GitHub/desktop_app_PAS/HuellaDigital/src/ventana01.java</file>
+            <file>file:/C:/Users/sebab/Documents/GitHub/desktop_app_PAS/HuellaDigital/src/adminprincpial01.java</file>
+            <file>file:/C:/Users/sebab/Documents/GitHub/desktop_app_PAS/HuellaDigital/src/asignar_horario.java</file>
+            <file>file:/C:/Users/sebab/Documents/GitHub/desktop_app_PAS/HuellaDigital/src/asistenciahuella.java</file>
+            <file>file:/C:/Users/sebab/Documents/GitHub/desktop_app_PAS/HuellaDigital/src/registro_horario.java</file>
         </group>
     </open-files>
 </project-private>
