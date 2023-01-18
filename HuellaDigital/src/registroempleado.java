@@ -737,8 +737,8 @@ public class registroempleado extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        ventana01 principal = new ventana01();
-        principal.setVisible(true);
+         adminprincpial01 ep = new adminprincpial01();
+        ep.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_jButton3ActionPerformed
 
