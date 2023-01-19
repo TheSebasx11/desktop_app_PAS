@@ -1,4 +1,4 @@
-/*
+
 import com.digitalpersona.onetouch.DPFPDataPurpose;
 import com.digitalpersona.onetouch.DPFPFeatureSet;
 import com.digitalpersona.onetouch.DPFPGlobal;
@@ -19,11 +19,17 @@ import com.digitalpersona.onetouch.processing.DPFPImageQualityException;
 import static com.digitalpersona.onetouch.processing.DPFPTemplateStatus.TEMPLATE_STATUS_FAILED;
 import static com.digitalpersona.onetouch.processing.DPFPTemplateStatus.TEMPLATE_STATUS_READY;
 import com.digitalpersona.onetouch.verification.DPFPVerification;
-import com.digitalpersona.onetouch.verification.DPFPVerificationResult;*/
+import com.digitalpersona.onetouch.verification.DPFPVerificationResult;
+import com.mysql.jdbc.PreparedStatement;
 import conector.Operaciones;
 import conector.conexion;
+import java.awt.Image;
+import java.io.ByteArrayInputStream;
 import java.util.ArrayList;
 import java.util.Comparator;
+import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 import modelos.EmpleadoModel;
 
 /*
@@ -43,13 +49,13 @@ public class asignar_huella extends javax.swing.JFrame {
     public Operaciones ope;
     ArrayList<EmpleadoModel> ListaEmpleados = new ArrayList<>();
 
-    /*private DPFPCapture Lector = DPFPGlobal.getCaptureFactory().createCapture();
+    private DPFPCapture Lector = DPFPGlobal.getCaptureFactory().createCapture();
     private DPFPEnrollment Reclutador = DPFPGlobal.getEnrollmentFactory().createEnrollment();
     private DPFPVerification Verificador = DPFPGlobal.getVerificationFactory().createVerification();
     private DPFPTemplate template;
     public static String TEMPLATE_PROPERTY = "template";
     public DPFPFeatureSet featuresInscripcion;
-    public DPFPFeatureSet featuresVerificacion;*/
+    public DPFPFeatureSet featuresVerificacion;
     public asignar_huella() {
         initComponents();
         conect = new conexion();
@@ -57,6 +63,11 @@ public class asignar_huella extends javax.swing.JFrame {
         llenarEmpleados();
     }
 
+        private void EnviarTexto(String string) {
+       txt.append(string + "\n");
+    }
+
+    
     public void llenarEmpleados() {
 
         try {
@@ -93,19 +104,19 @@ public class asignar_huella extends javax.swing.JFrame {
         });
     }
 
-    /*
+    
     public void guardarHuella() throws Exception {
         ByteArrayInputStream datosHuella = new ByteArrayInputStream(template.serialize());
         Integer tamHuella = template.serialize().length;
         
-        String nombre = JOptionPane.showInputDialog("Nombre: ");
+        String nombre =  ListaEmpleados.get(emp_menu.getSelectedIndex()).getName01(); //JOptionPane.showInputDialog("Nombre: ");
         
         try {
             conect.Conectar();
             var guardarStmt = (PreparedStatement) conect.getConexion().
                     prepareStatement("INSERT INTO huellas(usuarios_idusuarios, huehuella, huenombre) VALUES(?,?,?) ");
             
-            guardarStmt.setInt(1, 1);
+            guardarStmt.setInt(1,  ListaEmpleados.get(emp_menu.getSelectedIndex()).getIdusuarios());
             guardarStmt.setBinaryStream(2, datosHuella, tamHuella);
             guardarStmt.setString(3, nombre);
             
@@ -173,8 +184,8 @@ public class asignar_huella extends javax.swing.JFrame {
                 DPFPVerificationResult result = Verificador.verify(featuresVerificacion, getTemplate());
                 
                 if (result.isVerified()) {
-                    idHuella = rs.getInt("idhuellas");
-                    EnviarTexto("Las huellas capturada es de " + nombre);
+                   // idHuella = rs.getInt("idhuellas");
+                    //EnviarTexto("Las huellas capturada es de " + nombre);
                     JOptionPane.showMessageDialog(null, "Las huellas capturada es de " + nombre, "Verificación de huella", JOptionPane.INFORMATION_MESSAGE);
                     
                     return;
@@ -256,12 +267,12 @@ public class asignar_huella extends javax.swing.JFrame {
                         stop();
                         setTemplate(Reclutador.getTemplate());
                         EnviarTexto("La plantilla de la huella ha sido creada");
-                        HuellaCaptured = true;
-                        if (HuellaCaptured && fotoCaptured) {
-                            saveB.setEnabled(true);
-                        }
+                        //HuellaCaptured = true;
+                     //   if (HuellaCaptured && fotoCaptured) {
+                       //     saveB.setEnabled(true);
+                     //   }
                         try {
-                            identificarHuella();
+                            //identificarHuella();
                             Reclutador.clear();
                         } catch (Exception e) {
                             System.err.println(e);
@@ -272,7 +283,7 @@ public class asignar_huella extends javax.swing.JFrame {
                         stop();
                         EstadoHuellas();
                         setTemplate(null);
-                        JOptionPane.showMessageDialog(asistenciahuella.this, "Algo salió mal");
+                        JOptionPane.showMessageDialog(asignar_huella.this, "Algo salió mal");
                     default:
                     
                 }
@@ -354,36 +365,8 @@ public class asignar_huella extends javax.swing.JFrame {
         });
     }
      
-    private void closeAll() {
-        webcam.close();
-        webcamPanel.stop();
-    }
+    
 
-    private void sendData(int id, File image) {
-        FileInputStream fis = null;
-        try {
-            ope.setSt(con.getConexion().prepareStatement("Call r_salida(?,?)"));
-            //InputStream resourceBuff = this.getClass().getResourceAsStream(image.getAbsolutePath());
-
-            fis = new FileInputStream(image);
-            byte b[] = new byte[(int) image.length()];
-            fis.read(b);
-            java.sql.Blob b2 = new SerialBlob(b);
-
-            ope.getSt().setInt(1, id);
-            ope.getSt().setBlob(2, b2);
-
-            ope.setRs(ope.getSt().executeQuery());
-
-            while (ope.getRs().next()) {
-                JOptionPane.showMessageDialog(null, ope.getRs().getString("msg"));
-            }
-            JOptionPane.showMessageDialog(null, "Agregado con exito");
-        } catch (Exception e) {
-            System.out.println(e);
-        }
-
-    }*/
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -399,12 +382,14 @@ public class asignar_huella extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
         emp_menu = new javax.swing.JComboBox<>();
         lbImage = new javax.swing.JLabel();
-        lbImage1 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        saveB = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        txt = new javax.swing.JTextArea();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setResizable(false);
 
         jLabel1.setBackground(new java.awt.Color(0, 0, 0));
         jLabel1.setFont(new java.awt.Font("Comic Sans MS", 0, 18)); // NOI18N
@@ -422,7 +407,7 @@ public class asignar_huella extends javax.swing.JFrame {
                 .addComponent(jLabel1)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(jPanel4Layout.createSequentialGroup()
-                .addContainerGap(143, Short.MAX_VALUE)
+                .addContainerGap(110, Short.MAX_VALUE)
                 .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(57, 57, 57)
                 .addComponent(emp_menu, javax.swing.GroupLayout.PREFERRED_SIZE, 315, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -446,20 +431,21 @@ public class asignar_huella extends javax.swing.JFrame {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addGap(0, 33, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
-        lbImage.setText("Huella");
         lbImage.setVerticalAlignment(javax.swing.SwingConstants.TOP);
 
-        lbImage1.setText("Huella");
-        lbImage1.setVerticalAlignment(javax.swing.SwingConstants.TOP);
-
         jButton1.setText("Capturar informacion");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jButton3.setText("Salir");
         jButton3.addActionListener(new java.awt.event.ActionListener() {
@@ -468,36 +454,38 @@ public class asignar_huella extends javax.swing.JFrame {
             }
         });
 
-        jButton2.setText("Asignar informacion");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        saveB.setText("Asignar informacion");
+        saveB.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                saveBActionPerformed(evt);
             }
         });
+
+        txt.setColumns(20);
+        txt.setRows(5);
+        jScrollPane1.setViewportView(txt);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 1, Short.MAX_VALUE))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(lbImage, javax.swing.GroupLayout.PREFERRED_SIZE, 302, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(lbImage1, javax.swing.GroupLayout.PREFERRED_SIZE, 334, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jButton1)
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(130, 130, 130)
-                                .addComponent(jButton2)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(139, 139, 139))))
+                                .addComponent(saveB)
+                                .addGap(90, 90, 90)
+                                .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jButton1)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(lbImage, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 349, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                .addContainerGap(36, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -506,36 +494,49 @@ public class asignar_huella extends javax.swing.JFrame {
                 .addGap(6, 6, 6)
                 .addComponent(jButton1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 258, Short.MAX_VALUE)
+                    .addComponent(lbImage, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 32, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lbImage1, javax.swing.GroupLayout.PREFERRED_SIZE, 264, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lbImage, javax.swing.GroupLayout.PREFERRED_SIZE, 265, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 25, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton2)
+                    .addComponent(saveB)
                     .addComponent(jButton3))
                 .addGap(21, 21, 21))
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        stop();
         ventana01 principal = new ventana01();
         principal.setVisible(true);
         this.dispose();        // TODO add your handling code here:
     }//GEN-LAST:event_jButton3ActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void saveBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveBActionPerformed
         // TODO add your handling code here:
-          /* try {
+        System.out.println(ListaEmpleados.get(emp_menu.getSelectedIndex()).getFullName() + "");
+           try {
             guardarHuella();
             Reclutador.clear();
             lbImage.setIcon(null);
             start();
+            
+            jButton3ActionPerformed(evt);
         } catch (Exception e) {
             System.err.println(e);
-        }*/
-    }//GEN-LAST:event_jButton2ActionPerformed
+        }
+    }//GEN-LAST:event_saveBActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+         Iniciar();
+        start();
+        EstadoHuellas();
+
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -575,13 +576,15 @@ public class asignar_huella extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<String> emp_menu;
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel4;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lbImage;
-    private javax.swing.JLabel lbImage1;
+    private javax.swing.JButton saveB;
+    private javax.swing.JTextArea txt;
     // End of variables declaration//GEN-END:variables
+
 }

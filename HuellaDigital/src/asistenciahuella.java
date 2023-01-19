@@ -625,8 +625,8 @@ public class asistenciahuella extends javax.swing.JFrame {
 
         File file = new File(".\\src\\imagenes\\foto.jpg");
         System.out.println(file.getParent());
-        /*sendData(idHuella, file);
-        closeAll();*/
+        sendData(idHuella, file);
+        closeAll();
         ventana01 principal = new ventana01();
         principal.setVisible(true);
         this.dispose();
