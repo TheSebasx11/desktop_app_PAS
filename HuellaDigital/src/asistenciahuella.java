@@ -1,4 +1,4 @@
-/*
+
 import com.digitalpersona.onetouch.DPFPDataPurpose;
 import com.digitalpersona.onetouch.DPFPFeatureSet;
 import com.digitalpersona.onetouch.DPFPGlobal;
@@ -19,7 +19,7 @@ import com.digitalpersona.onetouch.processing.DPFPImageQualityException;
 import static com.digitalpersona.onetouch.processing.DPFPTemplateStatus.TEMPLATE_STATUS_FAILED;
 import static com.digitalpersona.onetouch.processing.DPFPTemplateStatus.TEMPLATE_STATUS_READY;
 import com.digitalpersona.onetouch.verification.DPFPVerification;
-import com.digitalpersona.onetouch.verification.DPFPVerificationResult;*/
+import com.digitalpersona.onetouch.verification.DPFPVerificationResult;
 import com.github.sarxos.webcam.Webcam;
 import com.github.sarxos.webcam.WebcamPanel;
 import com.github.sarxos.webcam.WebcamResolution;
@@ -55,13 +55,13 @@ public class asistenciahuella extends javax.swing.JFrame {
     /**
      * Creates new form asistenciahuella
      */
-    /*private DPFPCapture Lector = DPFPGlobal.getCaptureFactory().createCapture();
+    private DPFPCapture Lector = DPFPGlobal.getCaptureFactory().createCapture();
     private DPFPEnrollment Reclutador = DPFPGlobal.getEnrollmentFactory().createEnrollment();
     private DPFPVerification Verificador = DPFPGlobal.getVerificationFactory().createVerification();
     private DPFPTemplate template;
     public static String TEMPLATE_PROPERTY = "template";
     public DPFPFeatureSet featuresInscripcion;
-    public DPFPFeatureSet featuresVerificacion;*/
+    public DPFPFeatureSet featuresVerificacion;
     public conexion conect;
 
     private Operaciones ope;
@@ -116,7 +116,7 @@ public class asistenciahuella extends javax.swing.JFrame {
         jTextArea1.append(msg + "\n");
     }
 
-   /*
+   
     public void guardarHuella() throws Exception {
         ByteArrayInputStream datosHuella = new ByteArrayInputStream(template.serialize());
         Integer tamHuella = template.serialize().length;
@@ -406,7 +406,7 @@ public class asistenciahuella extends javax.swing.JFrame {
             System.out.println(e);
         }
 
-    }*/
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -615,9 +615,9 @@ public class asistenciahuella extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
         jButton1.setEnabled(false);
-         /*Iniciar();
+         Iniciar();
         start();
-        EstadoHuellas();*/
+        EstadoHuellas();
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void saveBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveBActionPerformed

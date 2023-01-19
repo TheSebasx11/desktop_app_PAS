@@ -25,6 +25,7 @@ public class conexion {
             System.out.println("Conectado");
 
         } catch (Exception e) {
+            System.out.println(e);
             System.out.println("No se ha establecido conexión");
 
         }
