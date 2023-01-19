@@ -1,8 +1,13 @@
+
+import com.mysql.jdbc.ResultSetMetaData;
+import conector.Operaciones;
+import conector.conexion;
+import javax.swing.table.DefaultTableModel;
+
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-
 /**
  *
  * @author Jose Perez
@@ -12,8 +17,131 @@ public class gen_report extends javax.swing.JFrame {
     /**
      * Creates new form gen_report
      */
+    public conexion con;
+    public Operaciones ope;
+    private DefaultTableModel DTM;
+
+    String numAsistencia = "SELECT COUNT(turnos.llegada) as Asistencia, usuarios.* FROM turnos, usuarios  INNER JOIN usuarios_has_horarios AS U ON U.usuarios_idusuarios = usuarios.idusuarios  WHERE turnos.usuarios_idusuarios = usuarios.idusuarios GROUP BY usuarios.idusuarios;";
+    String numInasistencia = "SELECT COUNT(U.idusuarios) as Inasistencia, U.* FROM usuarios as U WHERE U.idusuarios NOT IN (SELECT usuarios.idusuarios from usuarios INNER JOIN turnos as T ON T.usuarios_idusuarios = usuarios.idusuarios WHERE T.llegada IS NOT NULL) GROUP BY U.idusuarios;";
+    String puntuales = "SELECT DISTINCT usuarios.*, h.hora_inicio, T.llegada FROM usuarios  INNER JOIN turnos as T ON T.usuarios_idusuarios = usuarios.idusuarios INNER JOIN usuarios_has_horarios as UH ON UH.usuarios_idusuarios = usuarios.idusuarios inner join horarios as h on h.idhorarios = UH.horarios_idhorarios WHERE T.llegada <= h.hora_inicio";
+    String impuntuales = "SELECT usuarios.*, h.hora_inicio, T.llegada FROM usuarios  INNER JOIN turnos as T ON T.usuarios_idusuarios = usuarios.idusuarios INNER JOIN usuarios_has_horarios as UH ON UH.usuarios_idusuarios = usuarios.idusuarios inner join horarios as h on h.idhorarios = UH.horarios_idhorarios WHERE T.llegada > h.hora_inicio;";
+
     public gen_report() {
         initComponents();
+        con = new conexion();
+        ope = new Operaciones();
+        DTM = (DefaultTableModel) table.getModel();
+
+    }
+
+    public void MostrarReporte() {
+
+        DTM.setColumnCount(0);
+        DTM.setRowCount(0);
+//        System.out.println(menu.getSelectedIndex() + "");
+        try {
+            /*  Empleados mas puntuales
+                Empleados mas impuntuales
+                Empleados faltantes
+                Asistencia*/
+            DTM.addColumn("Nombre 1");
+            DTM.addColumn("Nombre 2");
+            DTM.addColumn("Apellido 1");
+            DTM.addColumn("Apellido 2");
+            DTM.addColumn("Nacimiento");
+            DTM.addColumn("Identificación");
+            DTM.addColumn("Sexo");
+            DTM.addColumn("Email");
+            switch (menu.getSelectedIndex()) {
+                case 0:
+                    ope.setSt(con.getConexion().prepareStatement(puntuales));
+
+                    DTM.addColumn("Hora Inicio");
+                    DTM.addColumn("Llegada");
+                    break;
+                case 1:
+                    ope.setSt(con.getConexion().prepareStatement(impuntuales));
+                    DTM.addColumn("Hora Inicio");
+                    DTM.addColumn("Llegada");
+
+                    break;
+                case 2:
+                    ope.setSt(con.getConexion().prepareStatement(numInasistencia));
+                    DTM.addColumn("Inasistencia");
+
+                    break;
+                case 3:
+                    ope.setSt(con.getConexion().prepareStatement(numAsistencia));
+                    DTM.addColumn("Asistencia");
+                    break;
+                default:
+
+            }
+
+            ope.setRs(ope.getSt().executeQuery());
+            ResultSetMetaData rsmd = (ResultSetMetaData) ope.getRs().getMetaData();
+
+            /*  for (int i = 0; i < rsmd.getColumnCount() - 4; i++) {
+                System.out.println("" + i + "" + rsmd.getColumnName(0) );
+//                DTM.addColumn(rsmd.getColumnLabel(i));
+            }*/
+            //System.out.println("" + rsmd.getColumnLabel(0) );
+            //System.out.println("" + rsmd.getColumnClassName(0));
+            while (ope.getRs().next()) {
+
+                int fila = DTM.getRowCount();
+                DTM.setRowCount(fila + 1);
+                /*    for (int i = 0; i < rsmd.getColumnCount(); i++) {
+                    DTM.setValueAt(ope.getRs().getString(rsmd.getColumnName(i)), fila, i);
+                }*/
+
+                DTM.setValueAt(ope.getRs().getString("name_01"), fila, 0);
+                DTM.setValueAt(ope.getRs().getString("name_02"), fila, 1);
+                DTM.setValueAt(ope.getRs().getString("lastname01"), fila, 2);
+                DTM.setValueAt(ope.getRs().getString("lastname02"), fila, 3);
+                DTM.setValueAt(ope.getRs().getString("fecha_nac"), fila, 4);
+                DTM.setValueAt(ope.getRs().getString("identificacion"), fila, 5);
+                DTM.setValueAt(ope.getRs().getString("sexo"), fila, 6);
+                DTM.setValueAt(ope.getRs().getString("email"), fila, 7);
+
+                switch (menu.getSelectedIndex()) {
+                    case 0:
+                        ope.setSt(con.getConexion().prepareStatement(puntuales));
+                        DTM.setValueAt(ope.getRs().getString("hora_inicio"), fila, 8);
+                        DTM.setValueAt(ope.getRs().getString("llegada"), fila, 9);
+
+                        break;
+                    case 1:
+                        ope.setSt(con.getConexion().prepareStatement(impuntuales));
+                        DTM.setValueAt(ope.getRs().getString("hora_inicio"), fila, 8);
+                        DTM.setValueAt(ope.getRs().getString("llegada"), fila, 9);
+
+                        break;
+                    case 2:
+                        ope.setSt(con.getConexion().prepareStatement(numInasistencia));
+                        DTM.setValueAt(ope.getRs().getString("Inasistencia"), fila, 8);
+
+                        break;
+                    case 3:
+                        ope.setSt(con.getConexion().prepareStatement(numAsistencia));
+                        DTM.setValueAt(ope.getRs().getString("Asistencia"), fila, 8);
+                        break;
+                    default:
+
+                }
+
+                /*    DTM.setValueAt(quer.getRs().getString("Nombres"), fila, 0);
+                DTM.setValueAt(quer.getRs().getString("Apellidos"), fila, 1);
+                DTM.setValueAt(quer.getRs().getString("Identificacion"), fila, 2);
+                DTM.setValueAt(quer.getRs().getString("Fecha"), fila, 3);
+                DTM.setValueAt(quer.getRs().getString("Llegada"), fila, 4);
+                DTM.setValueAt(quer.getRs().getString("Salida"), fila, 5);*/
+            }
+
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+
     }
 
     /**
@@ -29,9 +157,9 @@ public class gen_report extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        table = new javax.swing.JTable();
         jButton2 = new javax.swing.JButton();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        menu = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
@@ -50,40 +178,15 @@ public class gen_report extends javax.swing.JFrame {
             }
         });
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        table.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null}
+
             },
             new String [] {
-                "Nombre", "Apellidos", "Identificación", "Fecha de nacimiento", "Hora_llegada", "Hora_salida", "Porcentaje_asistencia", "Cargo"
+
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(table);
 
         jButton2.setFont(new java.awt.Font("Comic Sans MS", 0, 14)); // NOI18N
         jButton2.setText("Volver");
@@ -93,10 +196,10 @@ public class gen_report extends javax.swing.JFrame {
             }
         });
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Empleados mas puntuales", "Empleados mas impuntuales", "Empleados faltantes", "Asistencia" }));
-        jComboBox1.addActionListener(new java.awt.event.ActionListener() {
+        menu.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Empleados mas puntuales", "Empleados mas impuntuales", "Empleados faltantes", "Asistencia" }));
+        menu.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBox1ActionPerformed(evt);
+                menuActionPerformed(evt);
             }
         });
 
@@ -104,19 +207,19 @@ public class gen_report extends javax.swing.JFrame {
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+            .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(37, 37, 37)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 711, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(42, 42, 42)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 59, Short.MAX_VALUE)
+                        .addComponent(menu, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(107, 107, 107)
                         .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jButton2)))
-                .addGap(71, 71, 71))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton2))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 764, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(9, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -126,7 +229,7 @@ public class gen_report extends javax.swing.JFrame {
                     .addComponent(jLabel1)
                     .addComponent(jButton1)
                     .addComponent(jButton2)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(menu, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 23, Short.MAX_VALUE)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -155,11 +258,12 @@ public class gen_report extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
+        MostrarReporte();
     }//GEN-LAST:event_jButton1ActionPerformed
 
-    private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
+    private void menuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jComboBox1ActionPerformed
+    }//GEN-LAST:event_menuActionPerformed
 
     /**
      * @param args the command line arguments
@@ -199,10 +303,10 @@ public class gen_report extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
-    private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JComboBox<String> menu;
+    private javax.swing.JTable table;
     // End of variables declaration//GEN-END:variables
 }
