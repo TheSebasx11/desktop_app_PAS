@@ -23,6 +23,8 @@ import com.digitalpersona.onetouch.verification.DPFPVerificationResult;
 import com.github.sarxos.webcam.Webcam;
 import com.github.sarxos.webcam.WebcamPanel;
 import com.github.sarxos.webcam.WebcamResolution;
+import com.mashape.unirest.http.Unirest;
+import com.mashape.unirest.request.body.MultipartBody;
 
 import com.mysql.jdbc.PreparedStatement;
 import conector.Operaciones;
@@ -116,26 +118,25 @@ public class asistenciahuella extends javax.swing.JFrame {
         jTextArea1.append(msg + "\n");
     }
 
-   
     public void guardarHuella() throws Exception {
         ByteArrayInputStream datosHuella = new ByteArrayInputStream(template.serialize());
         Integer tamHuella = template.serialize().length;
-        
+
         String nombre = JOptionPane.showInputDialog("Nombre: ");
-        
+
         try {
             conect.Conectar();
             var guardarStmt = (PreparedStatement) conect.getConexion().
                     prepareStatement("INSERT INTO huellas(usuarios_idusuarios, huehuella, huenombre) VALUES(?,?,?) ");
-            
+
             guardarStmt.setInt(1, 1);
             guardarStmt.setBinaryStream(2, datosHuella, tamHuella);
             guardarStmt.setString(3, nombre);
-            
+
             guardarStmt.execute();
             guardarStmt.close();
             JOptionPane.showMessageDialog(null, "Huella Guardada Correctamente");
-            
+
             saveB.setEnabled(false);
             //verifyB.grabFocus();
 
@@ -145,23 +146,23 @@ public class asistenciahuella extends javax.swing.JFrame {
             conect.Desconectar();
         }
     }
-    
+
     public void verificarHuella(String nom) {
         try {
             conect.Conectar();
-            
+
             java.sql.PreparedStatement verificarStmt
                     = conect.getConexion().prepareStatement("SELECT huehuella FROM huellas WHERE huenombre=?");
             verificarStmt.setString(1, nom);
             java.sql.ResultSet rs = verificarStmt.executeQuery();
             if (rs.next()) {
                 byte templateBuffer[] = rs.getBytes("huehuella");
-                
+
                 DPFPTemplate referenceTemplate = DPFPGlobal.getTemplateFactory().createTemplate(templateBuffer);
                 setTemplate(referenceTemplate);
-                
+
                 DPFPVerificationResult result = Verificador.verify(featuresVerificacion, getTemplate());
-                
+
                 if (result.isVerified()) {
                     JOptionPane.showMessageDialog(null, "La huella coincide con la de " + nom, " Verificacion de Huella", JOptionPane.OK_OPTION);
                 } else {
@@ -176,98 +177,98 @@ public class asistenciahuella extends javax.swing.JFrame {
             conect.Desconectar();
         }
     }
-    
+
     public void identificarHuella() throws Exception {
         try {
             conect.Conectar();
             java.sql.PreparedStatement identificarStmt = conect.getConexion().prepareStatement("SELECT * FROM huellas as H, usuarios as U WHERE H.usuarios_idusuarios = U.idusuarios;");//("SELECT huenombre, huehuella FROM huellas");
 
             java.sql.ResultSet rs = identificarStmt.executeQuery();
-            
+
             while (rs.next()) {
                 byte templateBuffer[] = rs.getBytes("huehuella");
                 String nombre = rs.getString("name_01") + " " + rs.getString("lastname01")
                         + " " + rs.getString("lastname02"); //rs.getString("huenombre");
 
                 DPFPTemplate referenceTemplate = DPFPGlobal.getTemplateFactory().createTemplate(templateBuffer);
-                
+
                 setTemplate(referenceTemplate);
-                
+
                 DPFPVerificationResult result = Verificador.verify(featuresVerificacion, getTemplate());
-                
+
                 if (result.isVerified()) {
                     idHuella = rs.getInt("idhuellas");
                     EnviarTexto("Las huellas capturada es de " + nombre);
                     JOptionPane.showMessageDialog(null, "Las huellas capturada es de " + nombre, "Verificación de huella", JOptionPane.INFORMATION_MESSAGE);
-                    
+
                     return;
                 }
             }
             JOptionPane.showMessageDialog(null, "No existe ningún registro que coincide con la huella", "Verificación de huella", JOptionPane.ERROR_MESSAGE);
-            
+
             setTemplate(null);
-            
+
         } catch (Exception e) {
             System.err.println("Error al identificar huella dactilar." + e.getMessage());
         } finally {
             conect.Desconectar();
         }
     }
-    
+
     public DPFPFeatureSet extraerCaracteristicas(DPFPSample sample, DPFPDataPurpose purpose) {
-        
+
         DPFPFeatureExtraction extractor = DPFPGlobal.getFeatureExtractionFactory().createFeatureExtraction();
-        
+
         try {
             return extractor.createFeatureSet(sample, purpose);
         } catch (DPFPImageQualityException e) {
             return null;
         }
     }
-    
+
     public Image CrearImagenHuella(DPFPSample sample) {
         return DPFPGlobal.getSampleConversionFactory().createImage(sample);
     }
-    
+
     public void DibujarHuella(Image image) {
         lbImage.setIcon(new ImageIcon(image.getScaledInstance(lbImage.getWidth(), lbImage.getHeight(), Image.SCALE_DEFAULT)));
         repaint();
     }
-    
+
     public void EstadoHuellas() {
         EnviarTexto("Muestra de huellas necesarias para guardar template " + Reclutador.getFeaturesNeeded());
     }
-    
+
     public void start() {
         Lector.startCapture();
         EnviarTexto("Utilizando el Lector de Huella Dactilar");
     }
-    
+
     public void stop() {
         Lector.stopCapture();
         EnviarTexto("No se está usando el Lector de Huella Dactilar");
     }
-    
+
     public DPFPTemplate getTemplate() {
         return template;
     }
-    
+
     public void setTemplate(DPFPTemplate temp) {
         DPFPTemplate old = this.template;
         this.template = temp;
         firePropertyChange(TEMPLATE_PROPERTY, old, temp);
     }
-    
+
     public void ProcesarCaptura(DPFPSample sample) {
         featuresInscripcion = extraerCaracteristicas(sample, DPFPDataPurpose.DATA_PURPOSE_ENROLLMENT);
-        
+
         featuresVerificacion = extraerCaracteristicas(sample, DPFPDataPurpose.DATA_PURPOSE_VERIFICATION);
-        
+
         if (featuresInscripcion != null) {
             try {
                 System.out.println("Las caracteristicas de la Huella ha sido creada");
                 Reclutador.addFeatures(featuresInscripcion);
-                
+
                 Image image = CrearImagenHuella(sample);
                 DibujarHuella(image);
             } catch (Exception e) {
@@ -297,12 +298,12 @@ public class asistenciahuella extends javax.swing.JFrame {
                         setTemplate(null);
                         JOptionPane.showMessageDialog(asistenciahuella.this, "Algo salió mal");
                     default:
-                    
+
                 }
             }
         }
     }
-    
+
     protected void Iniciar() {
         Lector.addDataListener(new DPFPDataAdapter() {
             @Override
@@ -316,7 +317,7 @@ public class asistenciahuella extends javax.swing.JFrame {
                 });
             }
         });
-        
+
         Lector.addReaderStatusListener(new DPFPReaderStatusAdapter() {
             @Override
             public void readerConnected(final DPFPReaderStatusEvent e) {
@@ -327,7 +328,7 @@ public class asistenciahuella extends javax.swing.JFrame {
                     }
                 });
             }
-            
+
             @Override
             public void readerDisconnected(DPFPReaderStatusEvent e) {
                 SwingUtilities.invokeLater(new Runnable() {
@@ -338,7 +339,7 @@ public class asistenciahuella extends javax.swing.JFrame {
                 });
             }
         });
-        
+
         Lector.addSensorListener(new DPFPSensorAdapter() {
             @Override
             public void fingerTouched(DPFPSensorEvent dpfpse) {
@@ -349,7 +350,7 @@ public class asistenciahuella extends javax.swing.JFrame {
                     }
                 });
             }
-            
+
             @Override
             public void fingerGone(DPFPSensorEvent dpfpse) {
                 SwingUtilities.invokeLater(new Runnable() {
@@ -359,10 +360,10 @@ public class asistenciahuella extends javax.swing.JFrame {
                     }
                 });
             }
-            
+
             @Override
             public void imageAcquired(DPFPSensorEvent dpfpse) {
-                
+
             }
         });
         Lector.addErrorListener(new DPFPErrorAdapter() {
@@ -376,7 +377,7 @@ public class asistenciahuella extends javax.swing.JFrame {
             }
         });
     }
-     
+
     private void closeAll() {
         webcam.close();
         webcamPanel.stop();
@@ -385,7 +386,7 @@ public class asistenciahuella extends javax.swing.JFrame {
     private void sendData(int id, File image) {
         FileInputStream fis = null;
         try {
-            ope.setSt(con.getConexion().prepareStatement("Call r_salida(?,?)"));
+            /* ope.setSt(con.getConexion().prepareStatement("Call r_salida(?,?)"));
             //InputStream resourceBuff = this.getClass().getResourceAsStream(image.getAbsolutePath());
 
             fis = new FileInputStream(image);
@@ -400,7 +401,10 @@ public class asistenciahuella extends javax.swing.JFrame {
 
             while (ope.getRs().next()) {
                 JOptionPane.showMessageDialog(null, ope.getRs().getString("msg"));
-            }
+            }*/
+            String url = "http://192.168.1.17:3000/";
+            MultipartBody response = Unirest.post(url + id)
+                    .field("imagen", image);
             JOptionPane.showMessageDialog(null, "Agregado con exito");
         } catch (Exception e) {
             System.out.println(e);
@@ -615,7 +619,7 @@ public class asistenciahuella extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
         jButton1.setEnabled(false);
-         Iniciar();
+        Iniciar();
         start();
         EstadoHuellas();
     }//GEN-LAST:event_jButton1ActionPerformed
