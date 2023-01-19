@@ -10,7 +10,8 @@ import java.sql.DriverManager;
 public class conexion {
 
     private Connection Con;
-    private final String url = "jdbc:mysql://localhost:3306/control_asistencia";
+    //private final String url = "jdbc:mysql://localhost:3306/control_asistencia";
+    private final String url ="jdbc:mysql://190.121.135.167:4005/control_asistencia"; 
     private final String user = "root";
 
     public conexion() {
@@ -21,12 +22,12 @@ public class conexion {
 
         try {
             Class.forName("com.mysql.jdbc.Driver");
-            Con = DriverManager.getConnection(url, user, "");
+            Con = DriverManager.getConnection(url, user, "lilamelendez");
             System.out.println("Conectado");
 
         } catch (Exception e) {
-            System.out.println(e);
-            System.out.println("No se ha establecido conexión");
+            
+            System.out.println("No se ha establecido conexión"+e);
 
         }
     }
