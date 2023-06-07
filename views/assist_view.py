@@ -8,3 +8,5 @@ class Assists_View(Screen):
         super().__init__(**kw)
         self.add_widget(Label(text = "hola"))
 
+        
+
