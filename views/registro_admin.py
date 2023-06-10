@@ -8,15 +8,15 @@ class FormularioView(BoxLayout):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.orientation = 'vertical'
-        self.padding = 10
-        self.spacing = 10
+        self.padding = 40
+        self.spacing = 15
         self.background_color = (1, 1, 1, 1)  # Fondo blanco
         
         # Etiqueta "Hotel Trivoli"
-        lbl_hotel = Label(text='Hotel Trivoli', color=(1, 1, 1, 1), font_size=30, size_hint=(1, 0.3),font_name='Arial', pos_hint={'top': 1})
+        lbl_hotel = Label(text='Hotel Trivoli', color=(1, 1, 1, 1), font_size=30, size_hint=(1, 0.3), pos_hint={'top': 1})
         
         # Etiqueta "Registro del Administrador"
-        lbl_registro = Label(text='Registro del Administrador', color=(1, 1, 1, 1), font_size=20)
+        lbl_registro = Label(text='Registro de Administrador', color=(1, 1, 1, 1), font_size=20)
         
         # Campo Nombres
         lbl_nombres = Label(text='Nombres:', color=(1, 1, 1, 1), size_hint=(0.3, None), height=30)
