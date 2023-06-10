@@ -1,0 +1,85 @@
+<Label>
+    font_size: 35
+    color: (0,255,0,0.8)
+    font_name: 'fuentes/Sanseriffic.otf'
+
+<Button>
+    font_size: 15
+    color: '#F5E4E4'
+    
+
+<TextInput>
+    font_size: 35
+
+<MyLayout>
+    
+    canvas.before:
+        Color:
+            rgba: (204,153,204)
+        Rectangle:
+            pos: self.pos
+            size: self.size
+    BoxLayout:
+        orientation: 'vertical'
+        size: root.width, root.height
+        padding: 50
+        spacing: 10
+
+        Image:
+            source: 'imagenes/asd.jpg'
+            allow_stretch: True
+            keep_ratio: True
+
+        Label:
+            text: "Hotel trivoli"
+            canvas.before:
+            bold: True
+            font_name: 'fuentes/Tangerine_Regular.ttf'
+            font_size: 80
+            color: '09211A'
+
+        Label:
+            text: "Bienvenido al inicio de sesión del hotel trivoli"
+
+        BoxLayout:
+            orientation: 'vertical'
+            Label:
+                text: "Email"
+                size_hint_x: None
+                width: self.texture_size[0]
+                halign: 'left'  # Alinea el texto a la izquierda
+
+            TextInput:
+                multiline: False
+                size_hint_x: 0.84
+
+        BoxLayout:
+            orientation: 'vertical'
+            Label:
+                text: "Contraseña"
+                size_hint_x: None
+                width: self.texture_size[0]
+                halign: 'left'  # Alinea el texto a la izquierda
+
+            TextInput:
+                multiline: False
+                size_hint_x: 0.84
+
+        Button:
+            text: "Iniciar sesión"
+            pos_hint: {'center_x': 0.165}
+            size_hint: (None, None)
+            width: 300
+            height: 50
+            background_color: '#00FFFF'
+            
+        
+        Button:
+            text: "¿Olvidaste tu contraseña?"
+            pos_hint: {'center_x': 0.165}
+            size_hint: (None, None)
+            width: 300
+            height: 50
+            background_color: '#00FFFF'
+
+    
