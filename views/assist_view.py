@@ -1,12 +1,44 @@
-import kivy.uix.boxlayout
+from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.label import Label
-import kivy.uix.anchorlayout
+from kivy.uix.anchorlayout import AnchorLayout
 from kivy.uix.screenmanager import Screen
+from kivy.uix.button import Button
 
 class Assists_View(Screen):
     def __init__(self, **kw):
         super().__init__(**kw)
-        self.add_widget(Label(text = "hola"))
+        anchor_lay = AnchorLayout(anchor_x = "center", anchor_y="center", padding = (10,10,10,10))
+        boxM = BoxLayout(orientation = "vertical")
+        box1 = BoxLayout(orientation = "horizontal", padding = (50,10), size_hint = (1,.3))
+        box2 = BoxLayout(orientation = "horizontal", padding = (50,10))
+        box3 = BoxLayout(orientation = "horizontal")
+        anchor_lay.add_widget(boxM)
+        boxM.add_widget(box1)
+        boxM.add_widget(box2)
+        boxM.add_widget(box3)
+
+        anchor_lay.background_color = (255, 255 , 255 ,1)
+
+
+        box1.add_widget(Label(text = "Hotel Trivoli", size_hint = (.9,.2)))
+
+        #box2.add_widget(Label(text = "", size_hint=(.2,.2)))
+        box2.add_widget(Button(text = "Comenzar Lectura", size_hint =(.9, .2)))
+        box2.add_widget(Label(text = "", size_hint=(.2,.2)))
+        box2.add_widget(Button(text = "Registrar Turno",  size_hint =(.9, .2)))
+        #box2.add_widget(Label(text = "", size_hint=(.2,.2)))
 
         
+        boxMini1 = BoxLayout(orientation = "vertical")
+        boxMini1.add_widget(Label(text = "Huella Empleado"))
+        boxMini1.add_widget(Label(text = "image1"))
+
+        boxMini2 = BoxLayout(orientation = "vertical")
+        boxMini2.add_widget(Label(text = "Foto Empleado"))
+        boxMini2.add_widget(Label(text = "image2"))
+
+        box3.add_widget(boxMini1)
+        box3.add_widget(boxMini2)
+
+        self.add_widget(anchor_lay)
 

@@ -3,8 +3,9 @@ from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.label import Label
 from kivy.uix.textinput import TextInput
 from kivy.uix.button import Button
+from kivy.uix.screenmanager import Screen
 
-class FormularioView(BoxLayout):
+class FormularioView(BoxLayout, Screen):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.orientation = 'vertical'
@@ -13,6 +14,7 @@ class FormularioView(BoxLayout):
         self.background_color = (1, 1, 1, 1)  # Fondo blanco
         
         # Etiqueta "Hotel Trivoli"
+        #lbl_hotel = Label(text='Hotel Trivoli', color=(1, 1, 1, 1), font_size=30, size_hint=(1, 0.3),font_name='Arial', pos_hint={'top': 1})
         lbl_hotel = Label(text='Hotel Trivoli', color=(1, 1, 1, 1), font_size=30, size_hint=(1, 0.3), pos_hint={'top': 1})
         
         # Etiqueta "Registro del Administrador"
