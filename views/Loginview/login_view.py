@@ -4,8 +4,11 @@ from kivy.properties import ObjectProperty
 from kivy.lang import Builder
 from kivy.core.window import Window
 from kivy.uix.screenmanager import Screen
+import os
 
-Builder.load_file('loginview.kv')
+currentFilePath = os.path.dirname(os.path.abspath(__file__))
+Builder.load_file(os.path.join(currentFilePath,"loginview.kv"))
+#Builder.load_file('loginview.kv')
 
 class MyLayout(Widget):
     

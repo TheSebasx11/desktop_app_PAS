@@ -6,7 +6,6 @@ from views.registro_admin import FormularioView
 from views.Loginview.login_view import LoginView
 
 
-
 class MyApp(App):
     def build(self):
         scManager = ScreenManager()
