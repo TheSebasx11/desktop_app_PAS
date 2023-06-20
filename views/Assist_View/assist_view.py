@@ -1,12 +1,28 @@
-from kivy.uix.boxlayout import BoxLayout
-from kivy.uix.label import Label
-from kivy.uix.anchorlayout import AnchorLayout
+import os
 from kivy.uix.screenmanager import Screen
-from kivy.uix.button import Button
+from kivy.lang import Builder
+from kivy.uix.widget import Widget
 
-class Assists_View(Screen):
+from kivy.uix.boxlayout import BoxLayout
+from kivy.uix.anchorlayout import AnchorLayout
+from kivy.uix.label import Label
+from kivy.uix.button import Button
+from kivy.properties import ObjectProperty
+
+currentFilePath = os.path.dirname(os.path.abspath(__file__))
+kv = Builder.load_file(os.path.join(currentFilePath,"assist_view.kv"))
+
+class AssistLayout(Widget):
+    
+    email = ObjectProperty(None)
+    password = ObjectProperty(None)
+    
+
+class Assist_View(Screen):
     def __init__(self, **kw):
         super().__init__(**kw)
+        self.add_widget(AssistLayout())
+        """ 
         anchor_lay = AnchorLayout(anchor_x = "center", anchor_y="center", padding = (10,10,10,10))
         boxM = BoxLayout(orientation = "vertical")
         box1 = BoxLayout(orientation = "horizontal", padding = (50,10), size_hint = (1,.3))
@@ -40,5 +56,7 @@ class Assists_View(Screen):
         box3.add_widget(boxMini1)
         box3.add_widget(boxMini2)
 
-        self.add_widget(anchor_lay)
+        self.add_widget(anchor_lay)"""
+        
+   
 

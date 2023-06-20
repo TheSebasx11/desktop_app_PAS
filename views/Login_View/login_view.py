@@ -27,5 +27,5 @@ class LoginView(Screen):
         return MyLayout()"""
     
     
-if __name__ == '__main__':
-    LoginView().run()
+"""if __name__ == '__main__':
+    LoginView().run()"""
