@@ -13,9 +13,8 @@ currentFilePath = os.path.dirname(os.path.abspath(__file__))
 kv = Builder.load_file(os.path.join(currentFilePath,"assist_view.kv"))
 
 class AssistLayout(Widget):
+    si = "si"
     
-    email = ObjectProperty(None)
-    password = ObjectProperty(None)
     
 
 class Assist_View(Screen):
