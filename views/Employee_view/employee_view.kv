@@ -1,0 +1,63 @@
+<TableScreen>:
+    orientation: 'vertical'
+    padding: 10
+    spacing: 10
+
+    BoxLayout:
+        size_hint_y: None
+        height: '100dp'
+        padding: [5, 0, 5, 0]
+        spacing: 10
+        canvas.before:
+            Color:
+                rgba: 0, 0, 0, 1
+            Rectangle:
+                pos: self.pos
+                size: self.size
+
+        Label:
+            text: 'Hotel Trivoli'
+            font_size: 80
+
+    GridLayout:
+        cols: 7
+        spacing: 5
+        size_hint_y: None
+        height: self.minimum_height
+        padding: [100, 0, 0, 0]
+        
+
+<MainBoxLayout>:
+    orientation: 'vertical'
+    padding: 10
+    spacing: 10
+
+    TableScreen:
+        BoxLayout:
+            size_hint_y: None
+            height: '50dp'
+            padding: 10
+            spacing: 10
+            pos_hint: {'center_x': 0.5}
+
+            BoxLayout:
+                size_hint_x: None
+                width: '150dp'
+                padding: [0, 0, 10, 0]
+                pos_hint: {'center_x': 0.5}
+
+                Label:
+                    text: 'Label'
+                    size_hint: None, None
+                    size: self.texture_size
+                    halign: 'center'
+                    valign: 'middle'
+
+            Button:
+                text: root.button_small.text
+                size_hint: None, None
+                size: '100dp', '40dp'
+
+
+
+

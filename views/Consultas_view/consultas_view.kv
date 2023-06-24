@@ -1,0 +1,46 @@
+<TableScreen>:
+    orientation: 'vertical'
+    padding: 10
+    spacing: 10
+
+    BoxLayout:
+        size_hint_y: None
+        height: '100dp'
+        padding: [5, 0, 5, 0]
+        spacing: 10
+        canvas.before:
+            Color:
+                rgba: 0, 0, 0, 1  
+            Rectangle:
+                pos: self.pos
+                size: self.size
+
+        Label:
+            text: 'Hotel Trivoli'
+            font_size: 80
+
+    BoxLayout:
+        size_hint_y: None
+        height: '40dp'
+        padding: [5, 0, 5, 0]
+        spacing: 10
+        canvas.before:
+            Color:
+                rgba: 0, 0, 0, 1  
+            Rectangle:
+                pos: self.pos
+                size: self.size
+
+        TextInput:
+            hint_text: 'Busqueda'
+            font_size: 15
+
+        Button:
+            text: 'Buscar'
+            size_hint_x: None
+            width: '100dp'
+
+        Button:
+            text: 'Volver'
+            size_hint_x: None
+            width: '100dp'
