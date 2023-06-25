@@ -1,0 +1,62 @@
+<MyLayout>
+    orientation: 'vertical'
+    spacing: 30
+    padding: 50
+
+    BoxLayout:
+        orientation: 'vertical'
+        size_hint: None, None
+        size: self.minimum_size
+        pos_hint: {'center_x': 0.5}
+
+        Label:
+            text: "Hotel trivoli"
+            size_hint: None, None
+            size: self.texture_size
+            font_size: 70
+            color: '#FFFFFF'
+            font_name: ''
+
+        Label:
+            text: "Asignar horarios"
+            size_hint: None, None
+            size: self.texture_size
+            font_size: 35
+            color: '#FFFFFF'
+
+    FloatLayout:
+        size: root.width, root.height
+
+        Label:
+            text: "Empleados"
+            font_size: 20
+            size_hint: None, None
+            size: self.texture_size
+            pos_hint: {'center_x': 0.3, 'center_y': 0.7}
+
+        Spinner:
+            text: "Empleados"
+            values: ["Empleado1", "Empleado 2", "Empleado 3"]
+            size_hint: None, None
+            size: 200, 40
+            pos_hint: {'center_x': 0.3, 'center_y': 0.5}
+
+        Label:
+            text: "Horarios"
+            font_size: 20
+            size_hint: None, None
+            size: self.texture_size
+            pos_hint: {'center_x': 0.7, 'center_y': 0.7}
+
+        Spinner:
+            text: "Selecciona un horario"
+            values: ["Horario 1", "Horario 2", "Horario 3"]
+            size_hint: None, None
+            size: 200, 40
+            pos_hint: {'center_x': 0.7, 'center_y': 0.5}
+
+        Button:
+            text: 'Guardar horario'
+            size_hint: None, None
+            size: '150dp','30dp'        
+            pos_hint: {'center_x': 0.5, 'center_y': 0.2}    
