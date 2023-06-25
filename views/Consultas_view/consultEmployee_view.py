@@ -4,6 +4,7 @@ from kivy.uix.label import Label
 from kivy.uix.gridlayout import GridLayout
 from kivy.lang import Builder
 from kivy.graphics import Color, Line
+from kivy.uix.screenmanager import Screen
 import os
 
 currentFilePath = os.path.dirname(os.path.abspath(__file__))
@@ -59,6 +60,11 @@ class TableScreen(BoxLayout):
         container.add_widget(table_layout)
         self.add_widget(container)
 
+
+class ConsultEmployeeScreen(Screen):
+    def __init__(self, **kw):
+        super().__init__(**kw)
+        self.add_widget(TableScreen())
 
 class TableApp(App):
     def build(self):
