@@ -1,12 +1,13 @@
 #:kivy 2.2.0
 <Label>
-    font_size: 35
+    font_size: 20
     color: (0,255,0,0.8)
     #font_name: 'view/Loginview/fuentes/Sanseriffic.otf'
 
 <Button>
     font_size: 15
     color: '#F5E4E4'
+
     
 
 <TextInput>
@@ -24,7 +25,7 @@
         orientation: 'vertical'
         size: root.width, root.height
         padding: 50
-        spacing: 10
+        spacing: 30
 
         Image:
             source: 'assets/login_image.jpg'
@@ -68,7 +69,7 @@
 
         Button:
             text: "Iniciar sesión"
-            pos_hint: {'center_x': 0.165}
+            pos_hint: {'center_x': 0.5}
             size_hint: (None, None)
             width: 300
             height: 50
@@ -77,7 +78,7 @@
         
         Button:
             text: "¿Olvidaste tu contraseña?"
-            pos_hint: {'center_x': 0.165}
+            pos_hint: {'center_x': 0.5}
             size_hint: (None, None)
             width: 300
             height: 50
