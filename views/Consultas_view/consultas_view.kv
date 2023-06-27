@@ -1,7 +1,9 @@
+#:kivy 2.2.0
 <TableScreen>:
     orientation: 'vertical'
     padding: 10
     spacing: 10
+    search_input: search_input
 
     BoxLayout:
         size_hint_y: None
@@ -32,13 +34,15 @@
                 size: self.size
 
         TextInput:
-            hint_text: 'Busqueda'
+            id: search_input
+            hint_text: 'Búsqueda'
             font_size: 15
 
         Button:
             text: 'Buscar'
             size_hint_x: None
             width: '100dp'
+            on_release: root.search()
 
         Button:
             text: 'Volver'
