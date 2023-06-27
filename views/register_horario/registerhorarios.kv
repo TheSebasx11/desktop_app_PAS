@@ -1,0 +1,91 @@
+<MyLayout>
+    orientation: 'vertical'
+    spacing: 30
+    padding: 50
+
+    BoxLayout:
+        orientation: 'vertical'
+        size_hint: None, None
+        size: self.minimum_size
+        pos_hint: {'center_x': 0.5}
+
+        Label:
+            text: "Hotel trivoli"
+            size_hint: None, None
+            size: self.texture_size
+            font_size: 70
+            color: '#FFFFFF'
+
+        Label:
+            text: "Registro de Horarios"
+            size_hint: None, None
+            size: self.texture_size
+            font_size: 35
+            color: '#FFFFFF'
+
+    FloatLayout:
+        size: root.width, root.height
+
+        Label:
+            text: "Horario de llegada"
+            font_size: 20
+            size_hint: None, None
+            size: self.texture_size
+            pos_hint: {'center_x': 0.1, 'center_y': 0.7}
+
+        Spinner:
+            text: "Hora"
+            values: ["1", "2", "3"]
+            size_hint: None, None
+            size: 200, 40
+            pos_hint: {'center_x': 0.4, 'center_y': 0.7}
+            option_cls: 'MyOption'
+
+        Spinner:
+            text: "Minutos"
+            values: ["1", "2", "3"]
+            size_hint: None, None
+            size: 200, 40
+            pos_hint: {'center_x': 0.7, 'center_y': 0.7}
+            option_cls: 'MyOption'
+
+        Label:
+            text: "Horario de salida"
+            font_size: 20
+            size_hint: None, None
+            size: self.texture_size
+            pos_hint: {'center_x': 0.1, 'center_y': 0.5}
+
+        Spinner:
+            text: "Hora"
+            values: ["1", "2", "3"]
+            size_hint: None, None
+            size: 200, 40
+            pos_hint: {'center_x': 0.4, 'center_y': 0.5}
+            option_cls: 'MyOption'
+
+        Spinner:
+            text: "Minutos"
+            values: ["1", "2", "3"]
+            size_hint: None, None
+            size: 200, 40
+            pos_hint: {'center_x': 0.7, 'center_y': 0.5}
+            option_cls: 'MyOption'
+
+        Button:
+            text: 'Registrar Horario'
+            size_hint: None, None
+            size: '250dp','30dp'
+            pos_hint: {'center_x': 0.55, 'center_y': 0.2}
+
+        Button:
+            text: 'Regresar'
+            size_hint: None, None
+            size: '250dp','30dp'
+            pos_hint: {'center_x': 0.55, 'center_y': 0.1}
+
+
+<MyOption@SpinnerOption>:
+
+    size_hint_y: None
+    height: 30
