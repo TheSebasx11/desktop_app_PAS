@@ -1,22 +1,31 @@
-<MyLayout>
+<AsignarHorariosLayout>
     orientation: 'vertical'
     spacing: 30
     padding: 50
+
+
+    FloatLayout:
+        width: root.width
+      
+        Button:
+            text: "Volver"
+            size_hint: None, None
+            size:(50, 50)
+            pos: (10,root.height-self.height - 10)
+            on_press:  app.root.current = "principal_view"
+            #pos_hint: {'x': 1, 'y': 1}
 
     BoxLayout:
         orientation: 'vertical'
         size_hint: None, None
         size: self.minimum_size
         pos_hint: {'center_x': 0.5}
-
         Label:
             text: "Hotel trivoli"
             size_hint: None, None
             size: self.texture_size
             font_size: 70
-            color: '#FFFFFF'
-            
-
+            color: '#FFFFFF'      
         Label:
             text: "Asignar horarios"
             size_hint: None, None
@@ -35,8 +44,10 @@
             pos_hint: {'center_x': 0.3, 'center_y': 0.7}
 
         Spinner:
+            id: ass_emp_spinner
             text: "Empleados"
             values: ["Empleado1", "Empleado 2", "Empleado 3"]
+            #values: root.emps
             size_hint: None, None
             size: 200, 40
             pos_hint: {'center_x': 0.3, 'center_y': 0.5}
@@ -49,8 +60,10 @@
             pos_hint: {'center_x': 0.7, 'center_y': 0.7}
 
         Spinner:
+            id: ass_sch_spinner
             text: "Selecciona un horario"
-            values: ["Horario 1", "Horario 2", "Horario 3"]
+            #values: ["Horario 1", "Horario 2", "Horario 3"]
+            values: root.emps
             size_hint: None, None
             size: 200, 40
             pos_hint: {'center_x': 0.7, 'center_y': 0.5}

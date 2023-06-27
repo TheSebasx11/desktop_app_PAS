@@ -1,4 +1,4 @@
-<MyLayout>:
+<PrincipalViewLayout>:
     orientation: 'vertical'
 
     BoxLayout:
@@ -11,6 +11,7 @@
 
         Button:
             text: 'Salir'
+            on_press:  app.root.current = "admin_main_view"
 
     BoxLayout:
         orientation: 'vertical'
@@ -19,19 +20,25 @@
 
         Button:
             text: 'Registro de Empleados'
+            on_press:  app.root.current = "form_user"
 
         Button:
             text: 'Registro de Horarios'
+            on_press:  app.root.current = "register_sch"
         
         Button:
-            text: 'As de Horarios'
+            text: 'Asignacion de Horarios'
+            on_press:  app.root.current = "assign_sch"
 
         Button:
             text: 'Consultar Empleados'
+            on_press:  app.root.current = "consultEmp_view"
         
         Button:
             text: 'Consultar Horarios'
+            on_press:  app.root.current = "consultSch_view"
         
         Button:
             text: 'Generar Reporte'
+            on_press:  app.root.current = "report_view"
 

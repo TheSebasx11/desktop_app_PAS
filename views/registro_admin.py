@@ -5,7 +5,7 @@ from kivy.uix.textinput import TextInput
 from kivy.uix.button import Button
 from kivy.uix.screenmanager import Screen
 
-class FormularioView(BoxLayout, Screen):
+class FormularioAdminView(BoxLayout, Screen):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.orientation = 'vertical'
@@ -83,7 +83,7 @@ class FormularioView(BoxLayout, Screen):
 
 class MyApp(App):
     def build(self):
-        return FormularioView()
+        return FormularioAdminView()
 
 if __name__ == '__main__':
     MyApp().run()

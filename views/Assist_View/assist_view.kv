@@ -15,6 +15,17 @@
             pos: self.pos
             size: self.size
 
+    FloatLayout:
+        width: root.width
+      
+        Button:
+            text: "Volver"
+            size_hint: None, None
+            size:(50, 50)
+            pos: (10,root.height-self.height - 10)
+            on_press:  app.root.current = "admin_main_view"
+            #pos_hint: {'x': 1, 'y': 1}
+
     BoxLayout:
         orientation: "vertical"
         size: root.width, root.height

@@ -1,4 +1,4 @@
-<MyLayout>
+<RegisterHorariosLayout>
     orientation: 'vertical'
     spacing: 30
     padding: 50
@@ -83,6 +83,7 @@
             size_hint: None, None
             size: '250dp','30dp'
             pos_hint: {'center_x': 0.55, 'center_y': 0.1}
+            on_press:  app.root.current = "principal_view"
 
 
 <MyOption@SpinnerOption>:
