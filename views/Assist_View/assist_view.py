@@ -46,7 +46,7 @@ class AssistLayout(Widget):
             archivo_path = "huella_procesada.png"
             with open(archivo_path, 'rb') as archivo:
         # Enviar la solicitud HTTP POST con el archivo adjunto
-                respuesta = requests.post(url, files={'archivo': archivo})
+                respuesta = requests.post(url, files={'imagen': archivo})
             print(f"{respuesta}")
         
             
