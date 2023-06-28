@@ -1,9 +1,16 @@
+
+
 <AsignarHuellaLayout>:
     orientation: 'vertical'
     spacing: 30
     padding: 50
 
-  
+    canvas.before:
+        Color:
+            rgba: (204,153,204)
+        Rectangle:
+            pos: self.pos
+            size: self.size
 
     BoxLayout:
         orientation: 'vertical'
