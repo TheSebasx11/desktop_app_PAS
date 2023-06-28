@@ -23,6 +23,7 @@ class MainViewLayout(Widget):
         url = "https://frigosinu.andrea.com.co/lila/api/turnos/U"
         response = requests.get(url)
         data =  response.json()
+        print(data)
         
         row_data = [
             ["Nombres", "Apellidos", "Entrada", "Salida"],
