@@ -209,7 +209,7 @@ def get_num(max_number):
     return i
 
 
-id = f"{sys.argv[1]}"
+id = int(sys.argv[1])
 
 enroll_finger(id)
 
