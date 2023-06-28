@@ -63,19 +63,23 @@ class AsignarHuellaLayout(BoxLayout, Screen):
             tempf.seek(0)
             output = tempf.read()    
             print(output)
+            tempf.close()
         output = str(output.decode('utf-8', errors='replace'))
         output = output.strip()[-1:]
         print(f"{output.strip()[-1:]}")
-        response =  requests.post(url, headers= {
-            "Content-Type": "application/json",
-            "Accept": "application/json"
-        })
-        
-        print(f"response {response.status_code == 200}")
-        if response.status_code == 200:
-            self.msg = "Huella asignada para el usuario"
-            self.ids.l_msg.text = self.msg
-        
+        if output != "h":
+            response =  requests.post(url, headers= {
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+            
+            print(f"response {response.status_code == 200}")
+            if response.status_code == 200:
+                self.msg = "Huella asignada para el usuario"
+        else:
+            self.msg = "No se pudo registrar la huella"
+                
+        self.ids.l_msg.text = self.msg
         
        
             #self.parent.current = "principal_view"
