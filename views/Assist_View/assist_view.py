@@ -25,7 +25,7 @@ class AssistLayout(Widget):
         
         
     def registerSch(self, *args):
-        os.system("ls .")
+        os.system("sudo python3 fingerprint_simpletest_rpi.py")
  
     
  #   def registerFinger(self, id):
