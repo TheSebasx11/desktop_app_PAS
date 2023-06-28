@@ -50,7 +50,7 @@ class MyApp(App):
 
         #Put ur view name on the current and run
 
-        sm.current = "login_view"   
+        sm.current = "assign_sch"   
             
         return sm
     
