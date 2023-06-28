@@ -1,4 +1,5 @@
 from kivy.app import App
+
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.label import Label
 from kivy.uix.textinput import TextInput
@@ -19,8 +20,11 @@ class Empleado:
 
 
 class FormularioUserView(BoxLayout, Screen):
+    app = App.get_running_app()
+
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
+        
         self.orientation = 'vertical'
         self.padding = 30
         self.spacing = 10
@@ -186,8 +190,9 @@ class FormularioUserView(BoxLayout, Screen):
         self.txt_usuario.text = ''
 
     def regresar(self, *args):
-        # Implementa aquí la funcionalidad para regresar a la pantalla anterior o realizar alguna acción deseada
-        print("Regresar")
+        #Implementa aquí la funcionalidad para regresar a la pantalla anterior o realizar alguna acción deseada
+        self.parent.current = "principal_view"
+        #print(f"{self.parent.current}")
 
 
 class MyApp(App):
