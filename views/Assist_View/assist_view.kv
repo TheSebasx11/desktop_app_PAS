@@ -67,18 +67,9 @@
 
                 Label:
                     text: "Huella Empleado"
-                Label:
-                    text: ""
-                    font_size: 50
-                    background_color: (0,1, 1, 1)
-                    canvas.before:
-                        Color:
-                            rgba: self.background_color
-                        Rectangle:
-                            size: self.size
-                            pos: self.pos
+                
             Label:
-                text: "-"
+                text: root.msg
                 font_size: 50
                 size_hint: (.9,.2)
                 pos_hint: {'center_x': 0.5,'center_y': 0.7}
