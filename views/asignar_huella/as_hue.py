@@ -1,5 +1,3 @@
-
-
 import os
 from kivy.uix.screenmanager import Screen
 from kivy.lang import Builder
@@ -10,6 +8,8 @@ from kivy.uix.label import Label
 from kivy.uix.textinput import TextInput
 from kivy.uix.button import Button
 from kivy.uix.spinner import Spinner
+import subprocess
+import tempfile
 
 currentFilePath = os.path.dirname(os.path.abspath(__file__))
 kv = Builder.load_file(os.path.join(currentFilePath,"as_hue.kv"))
@@ -53,9 +53,19 @@ class AsignarHuellaLayout(BoxLayout, Screen):
         user_id = emp_spinner.text[:2] 
         
         url = f"https://frigosinu.andrea.com.co/lila/api/huellas/{user_id}"
-        os.system(f"sudo python3 ./views/asignar_huella/fingerprint_simpletest_rpi.py {user_id}")
+        cmd = f"sudo python3 ./views/asignar_huella/fingerprint_simpletest_rpi.py {user_id}"
+        #os.system()
         print(f"{user_id} ")
-        
+        output = ""
+        with tempfile.TemporaryFile() as tempf:
+            proc = subprocess.Popen(cmd, stdout=tempf,shell=True)
+            proc.wait()
+            tempf.seek(0)
+            output = tempf.read()    
+            print(output)
+        output = str(output.decode('utf-8', errors='replace'))
+        output = output.strip()[-1:]
+        print(f"{output.strip()[-1:]}")
         response =  requests.post(url, headers= {
             "Content-Type": "application/json",
             "Accept": "application/json"

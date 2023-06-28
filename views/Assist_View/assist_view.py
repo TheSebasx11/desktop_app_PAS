@@ -11,7 +11,8 @@ from kivy.properties import ObjectProperty
 import requests
 import subprocess
 import tempfile
-from picamera import PiCamera
+#from picamera import PiCamera
+import picamera 
 import time
 #from fingerprint_simpletest_rpi import get_fingerprint, finger, enroll_finger
 
@@ -45,12 +46,14 @@ class AssistLayout(Widget):
         print(f"{output.strip()[-1:]}")
         if output != "o":
             url = f"https://frigosinu.andrea.com.co/lila/api/turnos/{output}"
-            camera = PiCamera()
-            timestr = time.strftime("%Y%m%d_%H%M%S")
-            image_path = "IMG_{}.png".format(timestr)
-            camera.capture(image_path)
-            camera.close()
-            print("Captured image:", image_path)
+            with picamera.PiCamera() as camera:
+                #camera = PiCamera()
+                camera.resolution = (720, 480)
+                timestr = time.strftime("%Y%m%d_%H%M%S")
+                image_path = "IMG_{}.png".format(timestr)
+                camera.capture(image_path)
+                camera.close()
+                print("Captured image:", image_path)
             
             with open(image_path, 'rb') as archivo:
         # Enviar la solicitud HTTP POST con el archivo adjunto
