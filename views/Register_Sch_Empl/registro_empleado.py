@@ -25,51 +25,95 @@ class FormularioUserView(BoxLayout, Screen):
         self.padding = 30
         self.spacing = 10
         self.background_color = (1, 1, 1, 1)  # Fondo blanco
-        
+
         # Etiqueta "Hotel Trivoli"
-        lbl_hotel = Label(text='Hotel Trivoli', color=(1, 1, 1, 1), font_size=30, size_hint=(1, 0.3),
-                          pos_hint={'top': 1})
+        lbl_hotel = Label(
+            text='Hotel Trivoli', color=(1, 1, 1, 1), font_size=30, size_hint=(1, 0.3),
+            pos_hint={'top': 1}
+        )
 
         # Etiqueta "Registro de Empleados"
-        lbl_registro = Label(text='Registro de Empleados', color=(1, 1, 1, 1), font_size=20,pos_hint={'center_x':0.5,'center_y':0.5})
+        lbl_registro = Label(
+            text='Registro de Empleados', color=(1, 1, 1, 1), font_size=20, pos_hint={'center_x': 0.5, 'center_y': 0.5}
+        )
 
         # Campo primer nombre
-        lbl_nombres = Label(text='Primer Nombre:', color=(1, 1, 1, 1), size_hint=(0.3, None), height=20,pos_hint={'center_x':0.5,'center_y':0.5})
-        self.txt_nombres = TextInput(multiline=False, size_hint=(0.5, None), height=30,pos_hint={'center_x':0.5,'center_y':0.5})
+        lbl_nombres = Label(
+            text='Primer Nombre:', color=(1, 1, 1, 1), size_hint=(0.3, None),height=50,
+            pos_hint={'center_x': 0.5, 'center_y': 0.5}
+        )
+        self.txt_nombres = TextInput(
+            multiline=False, size_hint=(0.5, None), height=30, font_size=15, pos_hint={'center_x': 0.5, 'center_y': 0.5}
+        )
 
         # Campo segundo nombre
-        lbl_segundo_nom = Label(text='Segundo Nombre:', color=(1, 1, 1, 1), size_hint=(0.3, None), height=20,pos_hint={'center_x':0.5,'center_y':0.5})
-        self.txt_segundo_nom = TextInput(multiline=False, size_hint=(0.5, None), height=30,pos_hint={'center_x':0.5,'center_y':0.5})
+        lbl_segundo_nom = Label(
+            text='Segundo Nombre:', color=(1, 1, 1, 1), size_hint=(0.3, None),height=50,
+            pos_hint={'center_x': 0.5, 'center_y': 0.5}
+        )
+        self.txt_segundo_nom = TextInput(
+            multiline=False, size_hint=(0.5, None), height=30, font_size=15, pos_hint={'center_x': 0.5, 'center_y': 0.5}
+        )
 
         # Campo Primer Apellido
-        lbl_primer_ape = Label(text='Primer Apellido:', color=(1, 1, 1, 1), size_hint=(0.3, None), height=20,pos_hint={'center_x':0.5,'center_y':0.5})
-        self.txt_primer_ape = TextInput(multiline=False, size_hint=(0.5, None), height=30,pos_hint={'center_x':0.5,'center_y':0.5})
+        lbl_primer_ape = Label(
+            text='Primer Apellido:', color=(1, 1, 1, 1), size_hint=(0.3, None),height=50,
+            pos_hint={'center_x': 0.5, 'center_y': 0.5}
+        )
+        self.txt_primer_ape = TextInput(
+            multiline=False, size_hint=(0.5, None), height=30, font_size=15, pos_hint={'center_x': 0.5, 'center_y': 0.5}
+        )
 
         # Campo Segundo Apellido
-        lbl_segundo_ape = Label(text='Segundo Apellido:', color=(1, 1, 1, 1), size_hint=(0.3, None), height=20,pos_hint={'center_x':0.5,'center_y':0.5})
-        self.txt_segundo_ape = TextInput(multiline=False, size_hint=(0.5, None), height=30,pos_hint={'center_x':0.5,'center_y':0.5})
+        lbl_segundo_ape = Label(
+            text='Segundo Apellido:', color=(1, 1, 1, 1), size_hint=(0.3, None),height=50,
+            pos_hint={'center_x': 0.5, 'center_y': 0.5}
+        )
+        self.txt_segundo_ape = TextInput(
+            multiline=False, size_hint=(0.5, None), height=30, font_size=15, pos_hint={'center_x': 0.5, 'center_y': 0.5}
+        )
 
         # Campo Documento de Identidad
-        lbl_documento = Label(text='Documento de Identidad:', color=(1, 1, 1, 1), size_hint=(0.3, None), height=20,pos_hint={'center_x':0.5,'center_y':0.5})
-        self.txt_documento = TextInput(multiline=False, size_hint=(0.5, None), height=30,pos_hint={'center_x':0.5,'center_y':0.5})
+        lbl_documento = Label(
+            text='Documento de Identidad:', color=(1, 1, 1, 1), size_hint=(0.3, None),height=50,
+            pos_hint={'center_x': 0.5, 'center_y': 0.5}
+        )
+        self.txt_documento = TextInput(
+            multiline=False, size_hint=(0.5, None), height=30, font_size=15, pos_hint={'center_x': 0.5, 'center_y': 0.5}
+        )
 
         # Campo Telefono
-        lbl_telefono = Label(text='Telefono:', color=(1, 1, 1, 1), size_hint=(0.3, None), height=20,pos_hint={'center_x':0.5,'center_y':0.5})
-        self.txt_telefono = TextInput(multiline=False, size_hint=(0.5, None), height=30,pos_hint={'center_x':0.5,'center_y':0.5})
+        lbl_telefono = Label(
+            text='Telefono:', color=(1, 1, 1, 1), size_hint=(0.3, None),height=50,
+            pos_hint={'center_x': 0.5, 'center_y': 0.5}
+        )
+        self.txt_telefono = TextInput(
+            multiline=False, size_hint=(0.5, None), height=30, font_size=15, pos_hint={'center_x': 0.5, 'center_y': 0.5}
+        )
 
         # Campo Email
-        lbl_email = Label(text='Email:', color=(1, 1, 1, 1), size_hint=(0.3, None), height=20,pos_hint={'center_x':0.5,'center_y':0.5})
-        self.txt_email = TextInput(multiline=False, size_hint=(0.5, None), height=30,pos_hint={'center_x':0.5,'center_y':0.5})
+        lbl_email = Label(
+            text='Email:', color=(1, 1, 1, 1), size_hint=(0.3, None), height=50,
+            pos_hint={'center_x': 0.5, 'center_y': 0.5}
+        )
+        self.txt_email = TextInput(
+            multiline=False, size_hint=(0.5, None), height=30, font_size=15, pos_hint={'center_x': 0.5, 'center_y': 0.5}
+        )
 
         # Campo Usuario
-        lbl_usuario = Label(text='Usuario:', color=(1, 1, 1, 1), size_hint=(0.3, None), height=30,pos_hint={'center_x':0.5,'center_y':0.5})
-        self.txt_usuario = TextInput(multiline=False, size_hint=(0.5, None), height=30,pos_hint={'center_x':0.5,'center_y':0.5})
+        lbl_usuario = Label(
+            text='Usuario:', color=(1, 1, 1, 1), size_hint=(0.3, None), height=30,
+            pos_hint={'center_x': 0.5, 'center_y': 0.5}
+        )
+        self.txt_usuario = TextInput(
+            multiline=False, size_hint=(0.5, None), height=30, font_size=15, pos_hint={'center_x': 0.5, 'center_y': 0.5}
+        )
 
         # Contenedor para los botones
-        btn_layout = BoxLayout(size_hint=(0.5, None), height=30, spacing=10,pos_hint={'center_x':0.5,'center_y':0.5})
+        btn_layout = BoxLayout(size_hint=(0.5, None), height=30, spacing=10, pos_hint={'center_x': 0.5, 'center_y': 0.5})
 
         # Botón Registrar
-        btn = Button(
+        btn_registrar = Button(
             text='Registrar',
             background_color=(0.031, 0.129, 0.102, 1),  # Color de fondo del botón 1
             color=(1, 1, 1, 1),  # Color del texto en blanco
@@ -77,10 +121,22 @@ class FormularioUserView(BoxLayout, Screen):
             height=30,
             pos_hint={'center_x': 0.5}  # Centrado horizontalmente
         )
-        btn.bind(on_release=self.registrar_empleado)
+        btn_registrar.bind(on_release=self.registrar_empleado)
+
+        # Botón Regresar
+        btn_regresar = Button(
+            text='Regresar',
+            background_color=(0.031, 0.129, 0.102, 1),  # Color de fondo del botón 1
+            color=(1, 1, 1, 1),  # Color del texto en blanco
+            size_hint=(0.3, None),  # Tamaño pequeño
+            height=30,
+
+        )
+        btn_regresar.bind(on_release=self.regresar)
 
         # Agregar los botones al contenedor
-        btn_layout.add_widget(btn)
+        btn_layout.add_widget(btn_regresar)
+        btn_layout.add_widget(btn_registrar)
 
         # Agregar los elementos al diseño
         self.add_widget(lbl_hotel)
@@ -128,6 +184,10 @@ class FormularioUserView(BoxLayout, Screen):
         self.txt_telefono.text = ''
         self.txt_email.text = ''
         self.txt_usuario.text = ''
+
+    def regresar(self, *args):
+        # Implementa aquí la funcionalidad para regresar a la pantalla anterior o realizar alguna acción deseada
+        print("Regresar")
 
 
 class MyApp(App):

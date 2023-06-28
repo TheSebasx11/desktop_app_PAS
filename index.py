@@ -50,7 +50,7 @@ class MyApp(App):
 
         #Put ur view name on the current and run
 
-        sm.current = "report_view"   
+        sm.current = "login_view"   
             
         return sm
     
