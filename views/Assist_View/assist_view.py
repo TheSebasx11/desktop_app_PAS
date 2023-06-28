@@ -19,7 +19,7 @@ kv = Builder.load_file(os.path.join(currentFilePath,"assist_view.kv"))
 
 class AssistLayout(Widget):
     
-    msg = ""
+    msg = "Esperando lectura"
        
     def __init__(self, **kw):
         super().__init__(**kw)
@@ -48,9 +48,11 @@ class AssistLayout(Widget):
         # Enviar la solicitud HTTP POST con el archivo adjunto
                 respuesta = requests.post(url, files={'imagen': archivo})
             print(f"{respuesta}")
+            
             self.msg= f"Turno creado para el usuario #{output}"
         else:
             self.msg= f"No se reconoció la huella"
+        self.ids.l_msg.text = self.msg
     
  #   def registerFinger(self, id):
  
