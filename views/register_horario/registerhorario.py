@@ -28,9 +28,9 @@ class RegisterHorarios(Screen):
         self.add_widget(RegisterHorariosLayout())
 
 
-class MyApp(App):
+""" class MyApp(App):
     def build(self):
-        return RegisterHorarios()
+        return RegisterHorarios() """
 
 
-MyApp().run()
+

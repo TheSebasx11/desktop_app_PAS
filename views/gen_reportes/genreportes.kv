@@ -1,7 +1,18 @@
+<Label>
+    font_size: 20
+    color: (0,255,0,0.8)
+
 <GenReportesLayout>
     orientation: 'vertical'
     spacing: 30
     padding: 50
+
+    canvas.before:
+        Color:
+            rgba: (204,153,204)
+        Rectangle:
+            pos: self.pos
+            size: self.size
 
     BoxLayout:
         orientation: 'vertical'
@@ -14,7 +25,7 @@
             size_hint: None, None
             size: self.texture_size
             font_size: 40
-            color: '#FFFFFF'
+            #color: '#FFFFFF'
             
 
 
@@ -23,18 +34,19 @@
 
         Spinner:
             text: "Tipo de reportes"
-            values: ["Empleado1", "Empleado 2", "Empleado 3"]
+            values: ["Asistencia", "Mas Faltantes", "Mas puntuales"]
             size_hint: None, None
-            size: 700, 80
+            size: 400, 80
             pos_hint: {'center_x': 0.25, 'center_y': 0.9}
-
-
+            on_text:  root.on_change_text(self.text)
+            id: report_spinner
 
         Button:
             text: 'Generar Reporte'
             size_hint: None, None
-            size: 700, 80       
+            size: 400, 80       
             pos_hint: {'center_x': 0.75, 'center_y': 0.9}   
-    
+            on_press: root.generateTable()
+
     GridLayout:
         id: table_layout

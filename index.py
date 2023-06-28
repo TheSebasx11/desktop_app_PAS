@@ -32,7 +32,7 @@ class MyApp(App):
         formUser = FormularioUserView(name="form_user")
         assign_sch = AsignarHorarios(name="assign_sch")
         register_sch = RegisterHorarios(name = "register_sch")
-        GenReportesView
+        
         
         # Add ur view to the manager
         sm.add_widget(ass_view)
@@ -50,7 +50,7 @@ class MyApp(App):
 
         #Put ur view name on the current and run
 
-        sm.current = "principal_view"   
+        sm.current = "report_view"   
             
         return sm
     
