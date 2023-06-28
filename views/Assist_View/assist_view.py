@@ -8,7 +8,7 @@ from kivy.uix.anchorlayout import AnchorLayout
 from kivy.uix.label import Label
 from kivy.uix.button import Button
 from kivy.properties import ObjectProperty
-from fingerprint_simpletest_rpi import get_fingerprint, finger, enroll_finger
+#from fingerprint_simpletest_rpi import get_fingerprint, finger, enroll_finger
 
 
 currentFilePath = os.path.dirname(os.path.abspath(__file__))
@@ -25,15 +25,11 @@ class AssistLayout(Widget):
         
         
     def registerSch(self, *args):
-        if get_fingerprint():
-            print("Detected #", finger.finger_id, "with confidence", finger.confidence)
-        else:
-            print("Finger not found")
-        pass
+        exec("ls .")
+ 
     
-    def registerFinger(self, id):
-        enroll_finger()
-        pass
+ #   def registerFinger(self, id):
+ 
     
     
 
