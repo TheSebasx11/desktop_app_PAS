@@ -45,7 +45,7 @@ class AsignarHorariosLayout(BoxLayout):
         sch_spinner.values = schedules
 
 class AsignarHorarios(Screen):
-     def __init__(self, **kw):
+    def __init__(self, **kw):
         super().__init__(**kw)
         self.add_widget(AsignarHorariosLayout())
 

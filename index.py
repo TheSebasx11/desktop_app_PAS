@@ -1,6 +1,8 @@
 from kivy.app import App
 from kivy.uix.label import Label
 from kivy.uix.screenmanager import Screen, ScreenManager
+from kivy.config import Config
+#Config.set('graphics', 'fullscreen', 1)
 from views.Assist_View.assist_view import Assist_View
 from views.registro_admin import FormularioAdminView
 from views.Login_View.login_view import LoginView
@@ -12,13 +14,11 @@ from views.windowprin.ventana_principal import Ventana_PrincipalScreen
 from views.Register_Sch_Empl.registro_empleado import FormularioUserView
 from views.asignar_horarios.asignarhorarios import AsignarHorarios
 from views.register_horario.registerhorario import RegisterHorarios
+from views.gen_reportes.gen_reportes import GenReportesView
 
 class MyApp(App):
-    
-   
-    
+
     def build(self):
-       
         sm = ScreenManager()
         #Create ur view
         ass_view = Assist_View(name = "assist_view")
@@ -32,6 +32,7 @@ class MyApp(App):
         formUser = FormularioUserView(name="form_user")
         assign_sch = AsignarHorarios(name="assign_sch")
         register_sch = RegisterHorarios(name = "register_sch")
+        
         
         # Add ur view to the manager
         sm.add_widget(ass_view)
