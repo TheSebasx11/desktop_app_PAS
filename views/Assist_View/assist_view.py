@@ -32,7 +32,8 @@ class AssistLayout(Widget):
         
     def registerSch(self):
         #os.system("sudo python3 fingerprint_simpletest_rpi.py 1")
-        
+        self.msg= f"Esperando para escanear el dedo, recuerde colocar la huella 2 veces"
+        self.ids.l_msg.text = self.msg
         cmd = "sudo python3 ./views/Assist_View/fingerprint_simpletest_rpi.py 1"
         output = ""
         with tempfile.TemporaryFile() as tempf:
