@@ -11,6 +11,8 @@ from kivy.properties import ObjectProperty
 import requests
 import subprocess
 import tempfile
+from picamera import PiCamera
+import time
 #from fingerprint_simpletest_rpi import get_fingerprint, finger, enroll_finger
 
 
@@ -43,13 +45,20 @@ class AssistLayout(Widget):
         print(f"{output.strip()[-1:]}")
         if output != "o":
             url = f"http://192.168.20.24:3000/api/turnos/{output}"
-            archivo_path = "huella_procesada.png"
-            with open(archivo_path, 'rb') as archivo:
+            camera = PiCamera()
+            timestr = time.strftime("%Y%m%d_%H%M%S")
+            image_path = "IMG_{}.png".format(timestr)
+            camera.capture(image_path)
+            camera.close()
+            print("Captured image:", image_path)
+            
+            with open(image_path, 'rb') as archivo:
         # Enviar la solicitud HTTP POST con el archivo adjunto
                 respuesta = requests.post(url, files={'imagen': archivo})
             print(f"{respuesta}")
             
             self.msg= f"Turno creado para el usuario #{output}"
+            
         else:
             self.msg= f"No se reconoció la huella"
         self.ids.l_msg.text = self.msg
