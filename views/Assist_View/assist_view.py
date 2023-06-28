@@ -8,6 +8,7 @@ from kivy.uix.anchorlayout import AnchorLayout
 from kivy.uix.label import Label
 from kivy.uix.button import Button
 from kivy.properties import ObjectProperty
+import requests
 import subprocess
 import tempfile
 #from fingerprint_simpletest_rpi import get_fingerprint, finger, enroll_finger
@@ -28,7 +29,7 @@ class AssistLayout(Widget):
         
     def registerSch(self, *args):
         #os.system("sudo python3 fingerprint_simpletest_rpi.py 1")
-
+        
         cmd = "sudo python3 fingerprint_simpletest_rpi.py 1"
         output = ""
         with tempfile.TemporaryFile() as tempf:
@@ -38,7 +39,17 @@ class AssistLayout(Widget):
             output = tempf.read()    
             print(output)
         output = str(output.decode('utf-8', errors='replace'))
+        output = output.strip()[-1:]
         print(f"{output.strip()[-1:]}")
+        if output != "o":
+            url = f"http://192.168.20.24:3000/api/turnos/{output}"
+            archivo_path = "huella_procesada.png"
+            with open(archivo_path, 'rb') as archivo:
+        # Enviar la solicitud HTTP POST con el archivo adjunto
+                respuesta = requests.post(url, files={'archivo': archivo})
+            print(f"{respuesta}")
+        
+            
     
  #   def registerFinger(self, id):
  
