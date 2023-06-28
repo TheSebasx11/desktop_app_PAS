@@ -23,7 +23,7 @@ class MainViewLayout(Widget):
         url = "https://frigosinu.andrea.com.co/lila/api/turnos/U"
         response = requests.get(url)
         data =  response.json()
-        print(data)
+        
         
         row_data = [
             ["Nombres", "Apellidos", "Entrada", "Salida"],
@@ -45,7 +45,7 @@ class MainViewLayout(Widget):
        
         for row in row_data:
             for data in row:
-                label = Label(text=data)
+                label = Label(text=f" {data}")
                 table_layout.add_widget(label)
                 
         for _ in range(len(row_data)):
