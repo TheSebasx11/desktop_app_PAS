@@ -23,11 +23,11 @@ class AssistLayout(Widget):
        
     def __init__(self, **kw):
         super().__init__(**kw)
-        button = self.ids.register_b
-        button.bind(on_press=self.registerSch)
+        #button = self.ids.register_b
+        #button.bind(on_press=self.registerSch)
         
         
-    def registerSch(self, *args):
+    def registerSch(self):
         #os.system("sudo python3 fingerprint_simpletest_rpi.py 1")
         
         cmd = "sudo python3 fingerprint_simpletest_rpi.py 1"
@@ -49,7 +49,8 @@ class AssistLayout(Widget):
                 respuesta = requests.post(url, files={'imagen': archivo})
             print(f"{respuesta}")
             self.msg= f"Turno creado para el usuario #{output}"
-            
+        else:
+            self.msg= f"No se reconoció la huella"
     
  #   def registerFinger(self, id):
  
