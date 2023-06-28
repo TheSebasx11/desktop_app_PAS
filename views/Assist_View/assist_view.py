@@ -8,6 +8,8 @@ from kivy.uix.anchorlayout import AnchorLayout
 from kivy.uix.label import Label
 from kivy.uix.button import Button
 from kivy.properties import ObjectProperty
+import subprocess
+import tempfile
 #from fingerprint_simpletest_rpi import get_fingerprint, finger, enroll_finger
 
 
@@ -25,7 +27,14 @@ class AssistLayout(Widget):
         
         
     def registerSch(self, *args):
-        os.system("sudo python3 fingerprint_simpletest_rpi.py 1")
+        #os.system("sudo python3 fingerprint_simpletest_rpi.py 1")
+
+        cmd = "sudo python3 fingerprint_simpletest_rpi.py 1"
+        with tempfile.TemporaryFile() as tempf:
+            proc = subprocess.Popen(cmd, stdout=tempf,shell=True)
+            proc.wait()
+            tempf.seek(0)
+            print(tempf.read())
  
     
  #   def registerFinger(self, id):
