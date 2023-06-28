@@ -38,7 +38,7 @@ class AssistLayout(Widget):
             output = tempf.read()    
             print(output)
         output = str(output.decode('utf-8', errors='replace'))
-        print(f"{output.strip()}")
+        print(f"{output.strip()[-1:]}")
     
  #   def registerFinger(self, id):
  
