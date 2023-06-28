@@ -79,10 +79,11 @@ class AsignarHuella(Screen):
         
         self.add_widget(AsignarHuellaLayout())
 
-class AsignarHuella(App):
+""" class AsignarHuella(App):
     def build(self):
         return AsignarHuellaLayout()
 
 
 if __name__ == '__main__':
     AsignarHuella().run()
+ """
