@@ -52,6 +52,7 @@
                 halign: 'left'  # Alinea el texto a la izquierda
 
             TextInput:
+                id: email_input
                 multiline: False
                 size_hint_x: 0.84
                 font_size: 20
@@ -65,12 +66,15 @@
                 halign: 'left'  # Alinea el texto a la izquierda
 
             TextInput:
+                id: password_input
                 multiline: False
                 size_hint_x: 0.84
+                password: True
                 font_size: 20
 
         Button:
             text: "Iniciar sesión"
+            on_release: root.login_button_pressed(email_input.text, password_input.text)
             pos_hint: {'center_x': 0.5}
             size_hint: (None, None)
             width: 300

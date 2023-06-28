@@ -14,8 +14,21 @@ class MyLayout(Widget):
     
     email = ObjectProperty(None)
     password = ObjectProperty(None)
+
+    def login_button_pressed(self, email, password):
+        # Realizar la validación y lógica de inicio de sesión aquí
+        # Puedes comparar el email y la contraseña con los valores predeterminados
+
+        if email == "com" and password == "123":
+            # Iniciar sesión exitosamente
+            print("Inicio de sesión exitoso")
+            login_view = self.parent  # Obtener la instancia del controlador LoginView
+            login_view.manager.current = "admin_main_view"  # Cambiar a la otra vista definida en el archivo de configuración
+        else:
+            # Credenciales inválidas
+            print("Credenciales inválidas")
         
-        
+    
         
 class LoginView(Screen):
     def __init__(self, **kw):
