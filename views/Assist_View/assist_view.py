@@ -48,7 +48,7 @@ class AssistLayout(Widget):
         # Enviar la solicitud HTTP POST con el archivo adjunto
                 respuesta = requests.post(url, files={'imagen': archivo})
             print(f"{respuesta}")
-            msg= f"Turno creado para el usuario #{output}"
+            self.msg= f"Turno creado para el usuario #{output}"
             
     
  #   def registerFinger(self, id):
