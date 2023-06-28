@@ -32,7 +32,7 @@ class AssistLayout(Widget):
     def registerSch(self):
         #os.system("sudo python3 fingerprint_simpletest_rpi.py 1")
         
-        cmd = "sudo python3 fingerprint_simpletest_rpi.py 1"
+        cmd = "sudo python3 ./views/Assist_View/fingerprint_simpletest_rpi.py 1"
         output = ""
         with tempfile.TemporaryFile() as tempf:
             proc = subprocess.Popen(cmd, stdout=tempf,shell=True)

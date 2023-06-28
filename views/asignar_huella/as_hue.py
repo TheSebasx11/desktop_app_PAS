@@ -53,7 +53,7 @@ class AsignarHuellaLayout(BoxLayout, Screen):
         user_id = emp_spinner.text[:2] 
         
         url = f"https://frigosinu.andrea.com.co/lila/api/huellas/{user_id}"
-        os.system(f"sudo python3 fingerprint_simpletest_rpi.py {user_id}")
+        os.system(f"sudo python3 ./views/asignar_huella/fingerprint_simpletest_rpi.py {user_id}")
         print(f"{user_id} ")
         
         response =  requests.post(url, headers= {
