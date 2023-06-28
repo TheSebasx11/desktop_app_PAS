@@ -12,7 +12,7 @@ from views.Consultas_view.consultEmployee_view import ConsultView_View
 from views.ConsultaSch_view.consultSch_view import ConsultSchView_View
 from views.windowprin.ventana_principal import Ventana_PrincipalScreen
 from views.Register_Sch_Empl.registro_empleado import FormularioUserView
-from views.asignar_horarios.asignarhorarios import AsignarHorarios
+from views.asignar_horarios.asignarhorarios import AsignarHorariosLayout
 from views.register_horario.registerhorario import RegisterHorarios
 from views.gen_reportes.gen_reportes import GenReportesView
 
@@ -25,12 +25,12 @@ class MyApp(App):
         formAdmin = FormularioAdminView(name = "form_admin")
         log_view = LoginView(name = "login_view")
         admin_main_view = MainView_View(name = "admin_main_view")
-        report_view = ReportView(name = "report_view")
+        report_view = GenReportesView(name = "report_view")
         consultEmp_view = ConsultView_View(name="consultEmp_view")
         consultSch_view = ConsultSchView_View(name="consultSch_view")
         principal_view = Ventana_PrincipalScreen(name = "principal_view")
         formUser = FormularioUserView(name="form_user")
-        assign_sch = AsignarHorarios(name="assign_sch")
+        assign_sch = AsignarHorariosLayout(name="assign_sch")
         register_sch = RegisterHorarios(name = "register_sch")
         
         
@@ -50,7 +50,7 @@ class MyApp(App):
 
         #Put ur view name on the current and run
 
-        sm.current = "assign_sch"   
+        sm.current = "principal_view"   
             
         return sm
     

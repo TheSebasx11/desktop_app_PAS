@@ -1,10 +1,11 @@
 from kivy.app import App
-
+from kivy.uix.scrollview import ScrollView
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.label import Label
 from kivy.uix.textinput import TextInput
 from kivy.uix.button import Button
 from kivy.uix.screenmanager import Screen
+from kivy.core.window import Window
 
 
 class Empleado:
@@ -20,15 +21,17 @@ class Empleado:
 
 
 class FormularioUserView(BoxLayout, Screen):
-    app = App.get_running_app()
+    
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         
-        self.orientation = 'vertical'
-        self.padding = 30
-        self.spacing = 10
-        self.background_color = (1, 1, 1, 1)  # Fondo blanco
+        box = BoxLayout()
+        
+        box.orientation = 'vertical'
+        box.padding = 30
+        box.spacing = 10
+        box.background_color = (1, 1, 1, 1)  # Fondo blanco
 
         # Etiqueta "Hotel Trivoli"
         lbl_hotel = Label(
@@ -143,25 +146,28 @@ class FormularioUserView(BoxLayout, Screen):
         btn_layout.add_widget(btn_registrar)
 
         # Agregar los elementos al diseño
-        self.add_widget(lbl_hotel)
-        self.add_widget(lbl_registro)
-        self.add_widget(lbl_nombres)
-        self.add_widget(self.txt_nombres)
-        self.add_widget(lbl_segundo_nom)
-        self.add_widget(self.txt_segundo_nom)
-        self.add_widget(lbl_primer_ape)
-        self.add_widget(self.txt_primer_ape)
-        self.add_widget(lbl_segundo_ape)
-        self.add_widget(self.txt_segundo_ape)
-        self.add_widget(lbl_documento)
-        self.add_widget(self.txt_documento)
-        self.add_widget(lbl_telefono)
-        self.add_widget(self.txt_telefono)
-        self.add_widget(lbl_email)
-        self.add_widget(self.txt_email)
-        self.add_widget(lbl_usuario)
-        self.add_widget(self.txt_usuario)
-        self.add_widget(btn_layout)
+        box.add_widget(lbl_hotel)
+        box.add_widget(lbl_registro)
+        box.add_widget(lbl_nombres)
+        box.add_widget(self.txt_nombres)
+        box.add_widget(lbl_segundo_nom)
+        box.add_widget(self.txt_segundo_nom)
+        box.add_widget(lbl_primer_ape)
+        box.add_widget(self.txt_primer_ape)
+        box.add_widget(lbl_segundo_ape)
+        box.add_widget(self.txt_segundo_ape)
+        box.add_widget(lbl_documento)
+        box.add_widget(self.txt_documento)
+        box.add_widget(lbl_telefono)
+        box.add_widget(self.txt_telefono)
+        box.add_widget(lbl_email)
+        box.add_widget(self.txt_email)
+        box.add_widget(lbl_usuario)
+        box.add_widget(self.txt_usuario)
+        box.add_widget(btn_layout)
+        scroll = ScrollView(size=(Window.width, Window.height))
+        scroll.add_widget(box)
+        self.add_widget(scroll)
 
     def registrar_empleado(self, *args):
         nombres = self.txt_nombres.text
