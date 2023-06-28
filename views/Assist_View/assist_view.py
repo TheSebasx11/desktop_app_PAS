@@ -44,7 +44,7 @@ class AssistLayout(Widget):
         output = output.strip()[-1:]
         print(f"{output.strip()[-1:]}")
         if output != "o":
-            url = f"http://192.168.1.106:3000/api/turnos/{output}"
+            url = f"https://frigosinu.andrea.com.co/lila/api/turnos/{output}"
             camera = PiCamera()
             timestr = time.strftime("%Y%m%d_%H%M%S")
             image_path = "IMG_{}.png".format(timestr)
