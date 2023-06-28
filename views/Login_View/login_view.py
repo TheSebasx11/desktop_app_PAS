@@ -19,7 +19,7 @@ class MyLayout(Widget):
         # Realizar la validación y lógica de inicio de sesión aquí
         # Puedes comparar el email y la contraseña con los valores predeterminados
 
-        if email == "com" and password == "123":
+        if email == "admin" and password == "pas2023":
             # Iniciar sesión exitosamente
             print("Inicio de sesión exitoso")
             login_view = self.parent  # Obtener la instancia del controlador LoginView
