@@ -35,9 +35,10 @@ class AssistLayout(Widget):
             proc = subprocess.Popen(cmd, stdout=tempf,shell=True)
             proc.wait()
             tempf.seek(0)
-            print(tempf.read())
-            output = str(tempf.read())
-        print(output[-4:])
+            output = tempf.read()    
+            print(output)
+        output = str(output.decode('utf-8', errors='replace'))
+        print(f"{output.strip()}")
     
  #   def registerFinger(self, id):
  
