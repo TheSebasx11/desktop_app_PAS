@@ -73,9 +73,9 @@ class Assist_View(Screen):
         super().__init__(**kw)
         self.add_widget(AssistLayout())
         
-class Assist_View(App):
+""" class Assist_View(App):
     def build(self):
         return AssistLayout()
         
 if __name__ == '__main__':
-    Assist_View().run()   
+    Assist_View().run()    """
