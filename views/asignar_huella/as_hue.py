@@ -49,7 +49,7 @@ class AsignarHuellaLayout(BoxLayout, Screen):
         
         emp_spinner = self.ids.ass_emp_spinner
         
-        user_id = emp_spinner.text[:1] 
+        user_id = emp_spinner.text[:2] 
         
         url = f"http://192.168.20.24:3000/api/huellas/{user_id}"
         os.system(f"sudo python3 fingerprint_simpletest_rpi.py {user_id}")
