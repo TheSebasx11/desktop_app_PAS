@@ -52,11 +52,31 @@
             size_hint: (1,3)
 
             Button:
+                id: register_b
                 text: "Registrar Turno"
-                size_hint: None, None
-                size:300, 40
-                pos_hint: {'center_x': 0.5,'center_y': 0.5}
-            
+                size_hint: (.9,.2)
+                #on_press: root.registerFinger()
+
+        BoxLayout:
+            orientation: "horizontal"
+            padding: (50,10)
+            size_hint: (1,3)
+
+            BoxLayout:
+                orientation: "vertical"
+
+                Label:
+                    text: "Huella Empleado"
+                Label:
+                    text: ""
+                    font_size: 50
+                    background_color: (0,1, 1, 1)
+                    canvas.before:
+                        Color:
+                            rgba: self.background_color
+                        Rectangle:
+                            size: self.size
+                            pos: self.pos
             Label:
                 text: "-"
                 font_size: 50
