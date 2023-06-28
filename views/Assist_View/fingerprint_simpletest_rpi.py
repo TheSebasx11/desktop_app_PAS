@@ -216,7 +216,7 @@ id = sys.argv[1]
 if get_fingerprint():
     print("Id del usuario: ", finger.finger_id)
 else:
-    print("Finger not found")
+    print("Usuario no encontrado")
 
 
 """ 
