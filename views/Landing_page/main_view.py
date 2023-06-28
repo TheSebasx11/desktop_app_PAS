@@ -19,6 +19,9 @@ class MainViewLayout(Widget):
         self.generate_labels()
         
     def generate_labels(self):
+        table_layout = self.ids.table_layout
+        table_layout.clear_widgets()
+
         
         url = "https://frigosinu.andrea.com.co/lila/api/turnos/U"
         response = requests.get(url)
@@ -41,7 +44,7 @@ class MainViewLayout(Widget):
             )
         
         
-        table_layout = self.ids.table_layout
+        
        
         for row in row_data:
             for data in row:
