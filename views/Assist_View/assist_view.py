@@ -25,7 +25,7 @@ class AssistLayout(Widget):
         
         
     def registerSch(self, *args):
-        exec("ls .")
+        os.system("ls .")
  
     
  #   def registerFinger(self, id):
