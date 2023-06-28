@@ -16,12 +16,12 @@ kv = Builder.load_file(os.path.join(currentFilePath,"as_hue.kv"))
 
 
 class AsignarHuellaLayout(BoxLayout, Screen):
-    msg = ""
+    msg = "Recuerda colocar 2 veces el dedo cuando se presiones el botón"
     
     def __init__(self, **kw):
         super().__init__(**kw)
         print(f"root {self.children }")
-        
+        self.ids.l_msg.text = self.msg    
         self.fill_data()
     
     def fill_data(self, *args):

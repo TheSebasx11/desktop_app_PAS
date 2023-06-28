@@ -1,4 +1,5 @@
-
+<Label>
+    color: '#000000'
 
 <AsignarHuellaLayout>:
     orientation: 'vertical'
@@ -22,14 +23,14 @@
             size_hint: None, None
             size: self.texture_size
             font_size: 50
-            color: '#FFFFFF'
+            color: '#000000'
             pos_hint: {'center_x': 0.5, 'y': 1}
         Label:
             text: "Asignar huella"
             size_hint: None, None
             size: self.texture_size
             font_size: 35
-            color: '#FFFFFF'
+            color: '#000000'
             pos_hint: {'center_x': 0.5, 'y': 1}
 
     FloatLayout:
@@ -58,15 +59,17 @@
         Button:
             text: 'Guardar huella'
             size_hint: None, None
-            size: '150dp', '30dp'        
+            size: '150dp', '30dp'  
+            color: '#FFFFFF'      
             pos_hint: {'center_x': 0.5, 'y': 0.5}
             on_press: root.sendData()
 
         Label:
             id: l_msg
-            font_size: 20
-            size_hint: None, None
-            size: self.texture_size
+            font_size: 25
+            size_hint: (.9,.2)
+            color: '#000000'
+            pos_hint: {'center_x': 0.5,'center_y': 0.7}
 
 
         FloatLayout:

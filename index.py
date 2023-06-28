@@ -30,9 +30,9 @@ class MyApp(App):
         consultEmp_view = ConsultView_View(name="consultEmp_view")
         consultSch_view = ConsultSchView_View(name="consultSch_view")
         principal_view = Ventana_PrincipalScreen(name = "principal_view")
-        formUser = FormularioUserView(name="form_user")
+        #formUser = FormularioUserView(name="form_user")
         assign_sch = AsignarHorariosLayout(name="assign_sch")
-        register_sch = RegisterHorarios(name = "register_sch")
+        #register_sch = RegisterHorarios(name = "register_sch")
         assign_finger = AsignarHuella(name = "assign_finger")
         
         
@@ -45,9 +45,9 @@ class MyApp(App):
         sm.add_widget(consultEmp_view)
         sm.add_widget(consultSch_view)
         sm.add_widget(principal_view)
-        sm.add_widget(formUser)
+        #sm.add_widget(formUser)
         sm.add_widget(assign_sch)
-        sm.add_widget(register_sch)
+        #sm.add_widget(register_sch)
         sm.add_widget(assign_finger)
         
 
