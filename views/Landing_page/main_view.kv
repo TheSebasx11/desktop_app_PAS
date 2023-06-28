@@ -61,5 +61,12 @@
             spacing: 5
             size_hint_y: 8
             height: "100dp"
-
+        FloatLayout:
+            width: root.width
+        Button:
+            text: "Refrescar"
+            size_hint: None, None
+            size: (150, 50)
+            pos: (root.width - self.width - 10, root.height - self.height - 10)
+            on_press: root.generate_labels()
         
