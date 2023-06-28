@@ -16,6 +16,7 @@ kv = Builder.load_file(os.path.join(currentFilePath,"as_hue.kv"))
 
 
 class AsignarHuellaLayout(BoxLayout, Screen):
+    msg = ""
     
     def __init__(self, **kw):
         super().__init__(**kw)
@@ -61,7 +62,9 @@ class AsignarHuellaLayout(BoxLayout, Screen):
         })
         
         print(f"response {response.status_code == 200}")
-        
+        if response.status_code == 200:
+            self.msg = "Huella asignada para el usuario"
+            self.ids.l_msg.text = self.msg
         
         
        

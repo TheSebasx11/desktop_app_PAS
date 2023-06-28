@@ -55,6 +55,13 @@
             pos_hint: {'center_x': 0.5, 'y': 0.5}
             on_press: root.sendData()
 
+        Label:
+            id: l_msg
+            font_size: 20
+            size_hint: None, None
+            size: self.texture_size
+
+
         FloatLayout:
             width: root.width
         Button:

@@ -15,6 +15,7 @@ from views.Register_Sch_Empl.registro_empleado import FormularioUserView
 from views.asignar_horarios.asignarhorarios import AsignarHorariosLayout
 from views.register_horario.registerhorario import RegisterHorarios
 from views.gen_reportes.gen_reportes import GenReportesView
+from views.asignar_huella.as_hue import AsignarHuella
 
 class MyApp(App):
 
@@ -32,6 +33,7 @@ class MyApp(App):
         formUser = FormularioUserView(name="form_user")
         assign_sch = AsignarHorariosLayout(name="assign_sch")
         register_sch = RegisterHorarios(name = "register_sch")
+        assign_finger = AsignarHuella(name = "assign_finger")
         
         
         # Add ur view to the manager
@@ -46,11 +48,12 @@ class MyApp(App):
         sm.add_widget(formUser)
         sm.add_widget(assign_sch)
         sm.add_widget(register_sch)
+        sm.add_widget(assign_finger)
         
 
         #Put ur view name on the current and run
 
-        sm.current = "assist_view"   
+        sm.current = "admin_main_view"   
             
         return sm
     
