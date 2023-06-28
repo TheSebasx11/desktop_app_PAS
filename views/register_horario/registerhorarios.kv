@@ -34,16 +34,18 @@
             pos_hint: {'center_x': 0.1, 'center_y': 0.7}
 
         Spinner:
+            id: hora_llegada_spinner
             text: "Hora"
-            values: ["1", "2", "3"]
+            values: ["00", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23"]
             size_hint: None, None
             size: 200, 40
             pos_hint: {'center_x': 0.4, 'center_y': 0.7}
             option_cls: 'MyOption'
 
         Spinner:
+            id: minutos_llegada_spinner
             text: "Minutos"
-            values: ["1", "2", "3"]
+            values: ["00", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "32", "33", "34", "35", "36", "37", "38", "39","40","41","42","43","44","45","46","47","48","49","50","51","52","53","54","55", "56", "57", "58", "59"]
             size_hint: None, None
             size: 200, 40
             pos_hint: {'center_x': 0.7, 'center_y': 0.7}
@@ -57,16 +59,18 @@
             pos_hint: {'center_x': 0.1, 'center_y': 0.5}
 
         Spinner:
+            id: hora_salida_spinner
             text: "Hora"
-            values: ["1", "2", "3"]
+            values: ["00", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23"]
             size_hint: None, None
             size: 200, 40
             pos_hint: {'center_x': 0.4, 'center_y': 0.5}
             option_cls: 'MyOption'
 
         Spinner:
+            id: minutos_salida_spinner
             text: "Minutos"
-            values: ["1", "2", "3"]
+            values: ["00", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "32", "33", "34", "35", "36", "37", "38", "39","40","41","42","43","44","45","46","47","48","49","50","51","52","53","54","55", "56", "57", "58", "59"]
             size_hint: None, None
             size: 200, 40
             pos_hint: {'center_x': 0.7, 'center_y': 0.5}
@@ -77,6 +81,7 @@
             size_hint: None, None
             size: '250dp','30dp'
             pos_hint: {'center_x': 0.55, 'center_y': 0.2}
+            on_release: root.registrar_horario()
 
         Button:
             text: 'Regresar'
@@ -87,6 +92,5 @@
 
 
 <MyOption@SpinnerOption>:
-
     size_hint_y: None
     height: 30

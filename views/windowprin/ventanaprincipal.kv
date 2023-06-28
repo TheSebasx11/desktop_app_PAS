@@ -1,44 +1,65 @@
 <PrincipalViewLayout>:
     orientation: 'vertical'
 
-    BoxLayout:
-        orientation: 'horizontal'
-        size_hint_y: 0.2  # Ajusta este valor para cambiar la posición vertical de los botones
-        height: '40dp'
-
-        Button:
-            text: 'Configurar'
+    AnchorLayout:
+        anchor_x: 'left'
+        anchor_y: 'top'
+        padding: 10
 
         Button:
             text: 'Salir'
+            size_hint: None, None
+            size: 300, 40
             on_press:  app.root.current = "admin_main_view"
 
-    BoxLayout:
-        orientation: 'vertical'
-        size_hint_y: 0.8  # Ajusta este valor para cambiar la posición vertical de los botones
-        height: '40dp'
 
-        Button:
-            text: 'Registro de Empleados'
-            on_press:  app.root.current = "form_user"
+    FloatLayout:
 
-        Button:
-            text: 'Registro de Horarios'
-            on_press:  app.root.current = "register_sch"
-        
-        Button:
-            text: 'Asignacion de Horarios'
-            on_press:  app.root.current = "assign_sch"
+        BoxLayout:
+            orientation: 'vertical'
+            spacing: 20
+            size_hint: None, None
+            size: 300, self.minimum_height
+            pos_hint: {'center_x': 0.5, 'center_y': 1}
 
-        Button:
-            text: 'Consultar Empleados'
-            on_press:  app.root.current = "consultEmp_view"
-        
-        Button:
-            text: 'Consultar Horarios'
-            on_press:  app.root.current = "consultSch_view"
-        
-        Button:
-            text: 'Generar Reporte'
-            on_press:  app.root.current = "report_view"
+            Button:
+                text: 'Registro de Empleados'
+                size_hint: None, None
+                size: 500, 50
+                pos_hint: {'center_x': 0.5, 'center_y': 1}
+                on_press:  app.root.current = "form_user"
 
+            Button:
+                text: 'Registro de Horarios'
+                size_hint: None, None
+                size: 500, 50
+                pos_hint: {'center_x': 0.5, 'center_y': 1}
+                on_press:  app.root.current = "register_sch"
+            
+            Button:
+                text: 'Asignacion de Horarios'
+                size_hint: None, None
+                size: 500, 50
+                pos_hint: {'center_x': 0.5, 'center_y': 1}
+                on_press:  app.root.current = "assign_sch"
+
+            Button:
+                text: 'Consultar Empleados'
+                size_hint: None, None
+                size: 500, 50
+                pos_hint: {'center_x': 0.5, 'center_y': 1}
+                on_press:  app.root.current = "consultEmp_view"
+            
+            Button:
+                text: 'Consultar Horarios'
+                size_hint: None, None
+                size: 500, 50
+                pos_hint: {'center_x': 0.5, 'center_y': 1}
+                on_press:  app.root.current = "consultSch_view"
+            
+            Button:
+                text: 'Generar Reporte'
+                size_hint: None, None
+                size: 500, 50
+                pos_hint: {'center_x': 0.5, 'center_y': 1}
+                on_press:  app.root.current = "report_view"
