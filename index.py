@@ -53,7 +53,7 @@ class MyApp(App):
 
         #Put ur view name on the current and run
 
-        sm.current = "admin_main_view"   
+        sm.current = "principal_view"   
             
         return sm
     
