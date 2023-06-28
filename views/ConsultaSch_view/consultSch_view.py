@@ -19,7 +19,7 @@ Builder.load_file(os.path.join(currentFilePath, "consultas_view.kv"))
 sys.path.append(currentFilePath)
 
 
-class ConsultViewLayout(Widget):
+class ConsultSchViewLayout(Widget):
     search_input = None  # Referencia al TextInput
     row_data = []
 
@@ -28,23 +28,19 @@ class ConsultViewLayout(Widget):
         self.generate_labels()
 
     def generate_labels(self):
-        url = "https://frigosinu.andrea.com.co/lila/api/usuario/all"
+        url = "https://frigosinu.andrea.com.co/lila/api/horarios/"
         response = requests.get(url)
         data = response.json()
 
         self.row_data = [
-            ["Nombres", "Apellidos", "Identificacion", "Sexo", "Cargo", "Fecha nacimiento", "Email"],
+            ["id", "Hora inicio", "Hora final"],
         ]
 
         for item in data:
             self.row_data.append(
-                [item["name_01"],
-                 item["lastname01"],
-                 item["identificacion"],
-                 item["sexo"],
-                 item["cargo"],
-                 str(datetime.strptime(item["fecha_nac"], '%Y-%m-%dT%H:%M:%S.%fZ')),
-                 item["email"],
+                [item["idhorarios"],
+                 item["hora_inicio"],
+                 item["hora_fin"]
                  ]
             )
 
@@ -65,7 +61,7 @@ class ConsultViewLayout(Widget):
         if search_name:
             filtered_data = []
             for row in self.row_data:
-                if search_name.lower() in row[0].lower() or search_name.lower() in row[1].lower():
+                if isinstance(row[0], int) and int(search_name) == row[0]:
                     filtered_data.append(row)
     
             # Actualizar la tabla con los datos filtrados
@@ -82,12 +78,13 @@ class ConsultViewLayout(Widget):
                 line = TableLine()
                 self.ids.table_layout.add_widget(line)
     
+    
 
 
-class ConsultView_View(Screen):
+class ConsultSchView_View(Screen):
     def __init__(self, **kw):
         super().__init__(**kw)
-        self.add_widget(ConsultViewLayout())
+        self.add_widget(ConsultSchViewLayout())
 
 
 class TableLine(BoxLayout):
@@ -98,3 +95,5 @@ class TableLine(BoxLayout):
 
         with self.canvas:
             Color(0.5, 0.5, 0)
+
+       
