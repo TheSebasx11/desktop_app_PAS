@@ -50,7 +50,7 @@ class MyApp(App):
 
         #Put ur view name on the current and run
 
-        sm.current = "principal_view"   
+        sm.current = "assist_view"   
             
         return sm
     

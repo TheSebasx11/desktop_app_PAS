@@ -21,7 +21,7 @@
         Button:
             text: "Volver"
             size_hint: None, None
-            size:(50, 50)
+            size:(250, 40)
             pos: (10,root.height-self.height - 10)
             on_press:  app.root.current = "admin_main_view"
             #pos_hint: {'x': 1, 'y': 1}
@@ -32,7 +32,7 @@
         padding: 50
 
         BoxLayout:
-            orientation: "horizontal"
+            orientation: "vertical"
             padding: (50,10)
             size_hint: (1,3)
             
@@ -41,44 +41,25 @@
                 canvas.before:
                 bold: True
         #       font_name: 'fuentes/Tangerine_Regular.ttf'
-                font_size: 80
+                font_size: 40
                 color: '09211A'
+                pos_hint: {'center_x': 0.5,'center_y': 0.2}
+
 
         BoxLayout:
-            orientation: "horizontal"
+            orientation: "vertical"
             padding: (50,10)
             size_hint: (1,3)
 
-            Button:
-                text: "Comenzar Lectura"
-                size_hint: (.9,.2)
-            Label:
-                text: ""
-                size_hint: (.9,.2)
             Button:
                 text: "Registrar Turno"
-                size_hint: (.9,.2)
-
-        BoxLayout:
-            orientation: "horizontal"
-            padding: (50,10)
-            size_hint: (1,3)
-
-            BoxLayout:
-                orientation: "vertical"
-
-                Label:
-                    text: "Huella Empleado"
-                Label:
-                    text: ""
-                    font_size: 50
-                    background_color: (0,1, 1, 1)
-                    canvas.before:
-                        Color:
-                            rgba: self.background_color
-                        Rectangle:
-                            size: self.size
-                            pos: self.pos
+                size_hint: None, None
+                size:300, 40
+                pos_hint: {'center_x': 0.5,'center_y': 0.5}
+            
             Label:
-                text: "Foto empleado"
+                text: "-"
+                font_size: 50
+                size_hint: (.9,.2)
+                pos_hint: {'center_x': 0.5,'center_y': 0.7}
 
