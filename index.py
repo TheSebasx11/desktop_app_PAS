@@ -1,6 +1,8 @@
 from kivy.app import App
 from kivy.uix.label import Label
 from kivy.uix.screenmanager import Screen, ScreenManager
+from kivy.config import Config
+#Config.set('graphics', 'fullscreen', 1)
 from views.Assist_View.assist_view import Assist_View
 from views.registro_admin import FormularioAdminView
 from views.Login_View.login_view import LoginView
@@ -12,26 +14,25 @@ from views.windowprin.ventana_principal import Ventana_PrincipalScreen
 from views.Register_Sch_Empl.registro_empleado import FormularioUserView
 from views.asignar_horarios.asignarhorarios import AsignarHorarios
 from views.register_horario.registerhorario import RegisterHorarios
+from views.gen_reportes.gen_reportes import GenReportesView
 
 class MyApp(App):
-    
-   
-    
+
     def build(self):
-       
         sm = ScreenManager()
         #Create ur view
         ass_view = Assist_View(name = "assist_view")
         formAdmin = FormularioAdminView(name = "form_admin")
         log_view = LoginView(name = "login_view")
         admin_main_view = MainView_View(name = "admin_main_view")
-        report_view = ReportView(name = "report_view")
+        report_view = GenReportesView(name = "report_view")
         consultEmp_view = ConsultEmployeeScreen(name="consultEmp_view")
         consultSch_view = ConsultSchScreen(name="consultSch_view")
         principal_view = Ventana_PrincipalScreen(name = "principal_view")
         formUser = FormularioUserView(name="form_user")
         assign_sch = AsignarHorarios(name="assign_sch")
         register_sch = RegisterHorarios(name = "register_sch")
+        GenReportesView
         
         # Add ur view to the manager
         sm.add_widget(ass_view)
@@ -49,7 +50,7 @@ class MyApp(App):
 
         #Put ur view name on the current and run
 
-        sm.current = "principal_view"   
+        sm.current = "report_view"   
             
         return sm
     

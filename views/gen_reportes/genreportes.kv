@@ -1,0 +1,40 @@
+<GenReportesLayout>
+    orientation: 'vertical'
+    spacing: 30
+    padding: 50
+
+    BoxLayout:
+        orientation: 'vertical'
+        size_hint: None, None
+        size: self.minimum_size
+        pos_hint: {'center_x': 0.5}
+
+        Label:
+            text: "Hotel trivoli"
+            size_hint: None, None
+            size: self.texture_size
+            font_size: 40
+            color: '#FFFFFF'
+            
+
+
+    FloatLayout:
+        size: root.width, root.height
+
+        Spinner:
+            text: "Tipo de reportes"
+            values: ["Empleado1", "Empleado 2", "Empleado 3"]
+            size_hint: None, None
+            size: 700, 80
+            pos_hint: {'center_x': 0.25, 'center_y': 0.9}
+
+
+
+        Button:
+            text: 'Generar Reporte'
+            size_hint: None, None
+            size: 700, 80       
+            pos_hint: {'center_x': 0.75, 'center_y': 0.9}   
+    
+    GridLayout:
+        id: table_layout
