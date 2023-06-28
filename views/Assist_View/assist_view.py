@@ -30,12 +30,14 @@ class AssistLayout(Widget):
         #os.system("sudo python3 fingerprint_simpletest_rpi.py 1")
 
         cmd = "sudo python3 fingerprint_simpletest_rpi.py 1"
+        output = ""
         with tempfile.TemporaryFile() as tempf:
             proc = subprocess.Popen(cmd, stdout=tempf,shell=True)
             proc.wait()
             tempf.seek(0)
+            output = tempf.read()
             print(tempf.read())
- 
+        print(output[-4:])
     
  #   def registerFinger(self, id):
  
