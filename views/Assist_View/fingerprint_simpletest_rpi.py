@@ -3,6 +3,7 @@
 
 import time
 import serial
+import sys
 
 import adafruit_fingerprint
 
@@ -208,6 +209,13 @@ def get_num(max_number):
     return i
 
 
+id = sys.argv[1]
+
+enroll_finger(id)
+
+
+""" 
+
 while True:
     print("----------------")
     if finger.read_templates() != adafruit_fingerprint.OK:
@@ -253,3 +261,4 @@ while True:
     if c == "q":
         print("Exiting fingerprint example program")
         raise SystemExit
+ """
