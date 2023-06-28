@@ -214,7 +214,7 @@ id = sys.argv[1]
 #enroll_finger(id)
 
 if get_fingerprint():
-    print("Detected #", finger.finger_id, "with confidence", finger.confidence)
+    print("Id del usuario: ", finger.finger_id)
 else:
     print("Finger not found")
 
