@@ -32,8 +32,10 @@ class MainViewLayout(Widget):
             row_data.append(
                 [item["name_01"],
                  item["lastname01"],
-                str(datetime.strptime(item["llegada"], '%Y-%m-%dT%H:%M:%S.%fZ')) ,
-                str(datetime.strptime(item["salida"], '%Y-%m-%dT%H:%M:%S.%fZ')) , 
+                 item["llegada"],
+                 item["salida"],
+                #str(datetime.strptime(item["llegada"], '%Y-%m-%dT%H:%M:%S.%fZ')) ,
+                #str(datetime.strptime(item["salida"], '%Y-%m-%dT%H:%M:%S.%fZ')) , 
                 ]
             )
         
