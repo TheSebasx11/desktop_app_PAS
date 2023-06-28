@@ -1,0 +1,66 @@
+<AsignarHuellaLayout>:
+    orientation: 'vertical'
+    spacing: 30
+    padding: 50
+
+  
+
+    BoxLayout:
+        orientation: 'vertical'
+        size_hint: None, None
+        size: self.minimum_size
+        pos_hint: {'center_x': 0.5, 'top': 1}
+        Label:
+            text: "Hotel trivoli"
+            size_hint: None, None
+            size: self.texture_size
+            font_size: 50
+            color: '#FFFFFF'
+            pos_hint: {'center_x': 0.5, 'y': 1}
+        Label:
+            text: "Asignar huella"
+            size_hint: None, None
+            size: self.texture_size
+            font_size: 35
+            color: '#FFFFFF'
+            pos_hint: {'center_x': 0.5, 'y': 1}
+
+    FloatLayout:
+        size: root.width, root.height
+        pos_hint: {'top': 0.7}
+
+        BoxLayout:
+            orientation: 'vertical'
+            size_hint: None, None
+            size: 200, 40
+            pos_hint: {'center_x': 0.3, 'y': 0.7}
+
+            Label:
+                text: "Empleados"
+                font_size: 20
+                size_hint: None, None
+                size: self.texture_size
+
+            Spinner:
+                id: ass_emp_spinner
+                text: "Empleados"
+                #values: root.emps[::-1]  # Invertir la lista de valores
+                size_hint: None, None
+                size: 200, 40
+
+        Button:
+            text: 'Guardar huella'
+            size_hint: None, None
+            size: '150dp', '30dp'        
+            pos_hint: {'center_x': 0.5, 'y': 0.5}
+
+        FloatLayout:
+            width: root.width
+        Button:
+            text: "Volver"
+            size_hint: None, None
+            size: (150, 50)
+            pos: (10, root.height - self.height - 10)
+            on_press: app.root.current = "principal_view"
+
+
