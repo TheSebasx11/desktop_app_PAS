@@ -211,7 +211,12 @@ def get_num(max_number):
 
 id = sys.argv[1]
 
-enroll_finger(id)
+#enroll_finger(id)
+
+if get_fingerprint():
+    print("Detected #", finger.finger_id, "with confidence", finger.confidence)
+else:
+    print("Finger not found")
 
 
 """ 
